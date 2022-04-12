@@ -3,7 +3,7 @@
 
 ## Requisitos
 ### 1 Diagramas
-1 Diagrama de casos de uso [ ]
+1 Diagrama de casos de uso [ X ]
 
 1.1 Diagrama de classes [ ]
 
