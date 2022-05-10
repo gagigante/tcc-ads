@@ -2,8 +2,10 @@ import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import 'express-async-errors';
 
-import { routes } from './routes';
-import { AppError } from './errors/AppError';
+import '@/container';
+
+import { routes } from '@/routes';
+import { AppError } from '@/errors/AppError';
 
 export const app = express();
 
@@ -12,7 +14,7 @@ app.use(express.json());
 
 app.use(routes);
 
-app.use((err: Error, req: Request, res: Response, nextFunction: NextFunction) => {
+app.use((err: Error, _req: Request, res: Response, _nextFunction: NextFunction) => {
   if (err instanceof AppError) {
     return res.status(err.statusCode).json({
       status: 'error',
