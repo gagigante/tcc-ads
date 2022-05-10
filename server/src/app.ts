@@ -4,8 +4,11 @@ import 'express-async-errors';
 
 import '@/container';
 
+import { createDatabaseConnection } from '@/database';
 import { routes } from '@/routes';
 import { AppError } from '@/errors/AppError';
+
+createDatabaseConnection();
 
 export const app = express();
 
