@@ -28,7 +28,8 @@ body {
 }
 
 body, input, textarea, select, button {
-  font: 400 1rem var(--primary-font);
+  font-size: 1rem;
+  font-family: var(--primary-font);
 }
 
 button {
