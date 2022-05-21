@@ -1,0 +1,37 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 1.5rem;
+  border: 1px solid #DCE2E6;
+  border-radius: 0.5rem;
+  transition: 0.2s;
+
+  &:hover, &:focus-within {
+    border-color: #F25D27;
+
+    label {
+      color: #F25D27;
+    }
+  }
+
+  label {
+    color: #A0ACB2;
+    font-size: 0.75rem;
+    transition: 0.2s;
+  }
+
+  input {
+    margin-top: 0.25rem;    
+    border: 0;
+    outline: 0;
+
+    &::placeholder {
+      color: #A0ACB2;
+    }
+  }
+}
+
+.hasError {
+  border-color: #DE3838;
+}
