@@ -1,0 +1,11 @@
+.container {
+  font-size: 0.75rem;
+  color: #A0ACB3;
+  background-color: transparent;
+  outline: 0;
+  border: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
