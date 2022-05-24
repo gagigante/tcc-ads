@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import styles from './styles.module.scss';
+import styles from './styles.module.scss'
 
 type CardItemProps = {
   title: string;
