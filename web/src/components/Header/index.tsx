@@ -10,7 +10,7 @@ type HeaderProps = {
 
 export const Header = ({ 
   hasSearchBar = false, 
-  onSearch = () => null 
+  onSearch = () => null
 }: HeaderProps) => {
   return (
     <div className={styles.container}>

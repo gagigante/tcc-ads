@@ -1,0 +1,30 @@
+.container {
+  width: 210px;
+  background-color: #ffffff;
+  border: 1px solid #DCE2E5;
+  border-radius: 1rem;
+
+  div {
+    border-bottom: 1px solid #DCE2E5;
+    padding: 2rem 4rem 2rem 2rem;
+
+    svg {
+      color: #F25D27;
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  strong {
+    margin: 2rem 4rem 0.5rem 2rem;
+    display: block;
+    font-size: 2.5rem;
+    color: #123952;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #617480;
+    margin: 0.5rem 2rem 2rem;
+  }
+}
