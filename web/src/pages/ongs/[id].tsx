@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { GetServerSideProps, NextPage } from 'next'
-import { FiHeart, FiFacebook, FiInstagram, FiTwitter, FiArrowLeft } from 'react-icons/fi'
+import { useRouter } from 'next/router'
+import { FiHeart, FiArrowLeft } from 'react-icons/fi'
 
 import { Button } from '../../components/Button'
 import { Header } from '../../components/Header'
@@ -9,7 +10,7 @@ import { InfoCard } from '../../components/InfoCard'
 import { CardItem } from '../../components/CardItem'
 
 import styles from '../../styles/pages/ongs.module.scss'
-import { useRouter } from 'next/router'
+
 import { getSocialLinkIcon } from '../../utils/getSocialLinkIcon'
 
 type SocialLink = {
@@ -105,10 +106,6 @@ const Ongs: NextPage<OngsProps> = ({
     }, 1000);
   }
 
-  function handleOpenSocialLink(url: string) {
-    push(url);
-  }
-
   return (
     <div className={styles.container}>
       <Header hasSearchBar onSearch={(searchTerm) => setSearchText(searchTerm)} />
@@ -150,7 +147,7 @@ const Ongs: NextPage<OngsProps> = ({
                     key={item.url} 
                     variant="info" 
                     icon={getSocialLinkIcon(item.type)}
-                    onClick={() => handleOpenSocialLink(item.url)}
+                    onClick={() => push(item.url)}
                   />
                 ))}
               </div>
