@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Expose } from 'class-transformer';
 
 import { uploadConfig } from '@/config/upload';
+import { OngSocialLink } from './OngSocialLink';
 
 @Entity('ongs')
 export class Ong {
@@ -37,6 +38,13 @@ export class Ong {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @OneToMany(
+    () => OngSocialLink, 
+    (ongSocialLink) => ongSocialLink.ong, 
+    { cascade: true, nullable: true }
+  )
+  ong_social_links?: OngSocialLink[];
 
   @Expose({ name: 'thumb_url' })
   getThumbUrl(): string | null {
