@@ -1,9 +1,18 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { 
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Expose } from 'class-transformer';
 
 import { uploadConfig } from '@/config/upload';
 import { OngSocialLink } from './OngSocialLink';
 import { OngContact } from './OngContact';
+import { OngAddress } from './OngAddress';
 
 @Entity('ongs')
 export class Ong {
@@ -40,6 +49,13 @@ export class Ong {
   @UpdateDateColumn()
   updated_at: Date;
 
+  @OneToOne(
+    () => OngAddress, 
+    (ongAddress) => ongAddress.ong,
+    { cascade: true, eager: true }
+  )
+  ong_address: OngAddress;
+
   @OneToMany(
     () => OngSocialLink, 
     (ongSocialLink) => ongSocialLink.ong, 
@@ -65,6 +81,22 @@ export class Ong {
         return `${process.env.APP_API_URL}/files/${this.thumb_url}`;
       case 's3':
         return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.thumb_url}`;
+      default:
+        return null;
+    }
+  }
+
+  @Expose({ name: 'banner_url' })
+  getBannerUrl(): string | null {
+    if (!this.banner_url) {
+      return null;
+    }
+
+    switch (uploadConfig.driver) {
+      case 'disk':
+        return `${process.env.APP_API_URL}/files/${this.banner_url}`;
+      case 's3':
+        return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.banner_url}`;
       default:
         return null;
     }

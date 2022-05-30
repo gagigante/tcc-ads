@@ -3,15 +3,15 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  UpdateDateColumn, 
 } from 'typeorm';
 
 import { Ong } from './Ong';
 
-@Entity('ong_contact')
-export class OngContact {
+@Entity('ong_address')
+export class OngAddress {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -19,7 +19,22 @@ export class OngContact {
   ong_id: number;
 
   @Column()
-  contact: string;
+  zip_code: string;
+
+  @Column()
+  state: string;
+
+  @Column()
+  city: string;
+  
+  @Column()
+  district: string;
+
+  @Column()
+  street: string;
+
+  @Column()
+  number: number;
 
   @CreateDateColumn()
   created_at: Date;
@@ -27,7 +42,7 @@ export class OngContact {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne(() => Ong, (ong) => ong.ong_contacts)
+  @OneToOne(() => Ong, (ong) => ong.ong_address)
   @JoinColumn({ name: 'ong_id' })
   ong: Ong;
 }
