@@ -1,5 +1,5 @@
 
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 
 import { appDataSource } from '@/database/dataSource';
 
@@ -14,8 +14,12 @@ export class OngsRepository implements IOngsRepository {
     this.repository = appDataSource.getRepository(Ong);
   }
 
-  public async getAll(): Promise<Ong[]> {
-    const ongs = await this.repository.find();
+  public async getAll(
+    query?: FindOptionsWhere<Ong> | FindOptionsWhere<Ong>[]
+  ): Promise<Ong[]> {
+    const ongs = await this.repository.find({
+      where: query
+    });
 
     return ongs; 
   }
