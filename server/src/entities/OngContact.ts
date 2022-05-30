@@ -10,7 +10,7 @@ import {
 
 import { Ong } from './Ong';
 
-@Entity('ong_contact')
+@Entity('ong_contacts')
 export class OngContact {
   @PrimaryGeneratedColumn('increment')
   id: number;

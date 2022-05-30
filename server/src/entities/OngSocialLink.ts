@@ -10,7 +10,7 @@ import {
 
 import { Ong } from './Ong';
 
-@Entity('ong_social_link')
+@Entity('ong_social_links')
 export class OngSocialLink {
   @PrimaryGeneratedColumn('increment')
   id: number;
