@@ -1,4 +1,12 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { 
+  Column, 
+  CreateDateColumn, 
+  Entity, 
+  JoinColumn, 
+  ManyToOne, 
+  PrimaryGeneratedColumn, 
+  UpdateDateColumn,
+} from 'typeorm';
 
 import { Ong } from './Ong';
 
@@ -6,6 +14,9 @@ import { Ong } from './Ong';
 export class OngSocialLink {
   @PrimaryGeneratedColumn('increment')
   id: number;
+
+  @Column()
+  ong_id: number;
 
   @Column()
   social_link_type: 'facebook' | 'instagram' | 'twitter';
@@ -20,5 +31,6 @@ export class OngSocialLink {
   updated_at: Date;
 
   @ManyToOne(() => Ong, (ong) => ong.ong_social_links)
+  @JoinColumn({ name: 'ong_id' })
   ong: Ong;
 }

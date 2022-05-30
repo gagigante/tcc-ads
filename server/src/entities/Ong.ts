@@ -43,14 +43,14 @@ export class Ong {
   @OneToMany(
     () => OngSocialLink, 
     (ongSocialLink) => ongSocialLink.ong, 
-    { cascade: true, nullable: true }
+    { cascade: true, nullable: true, eager: true }
   )
   ong_social_links?: OngSocialLink[];
 
   @OneToMany(
     () => OngContact, 
-    (ongContact) => ongContact.ong, 
-    { cascade: true }
+    (ongContact) => ongContact.ong,
+    { cascade: true, eager: true }
   )
   ong_contacts: OngContact[];
 

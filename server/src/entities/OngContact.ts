@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 import { Ong } from './Ong';
 
@@ -6,6 +6,9 @@ import { Ong } from './Ong';
 export class OngContact {
   @PrimaryGeneratedColumn('increment')
   id: number;
+
+  @Column()
+  ong_id: number;
 
   @Column()
   contact: string;
@@ -17,5 +20,6 @@ export class OngContact {
   updated_at: Date;
 
   @ManyToOne(() => Ong, (ong) => ong.ong_contacts)
+  @JoinColumn({ name: 'ong_id' })
   ong: Ong;
 }
