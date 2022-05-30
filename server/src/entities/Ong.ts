@@ -13,6 +13,7 @@ import { uploadConfig } from '@/config/upload';
 import { OngSocialLink } from './OngSocialLink';
 import { OngContact } from './OngContact';
 import { OngAddress } from './OngAddress';
+import { User } from './User';
 
 @Entity('ongs')
 export class Ong {
@@ -25,7 +26,7 @@ export class Ong {
   @Column({ type: 'text' })
   description: string;
 
-  @Column()
+  @Column({ unique: true })
   cpnj: string;
 
   @Column()
@@ -59,9 +60,9 @@ export class Ong {
   @OneToMany(
     () => OngSocialLink, 
     (ongSocialLink) => ongSocialLink.ong, 
-    { cascade: true, nullable: true, eager: true }
+    { cascade: true, eager: true }
   )
-  ong_social_links?: OngSocialLink[];
+  ong_social_links: OngSocialLink[];
 
   @OneToMany(
     () => OngContact, 
@@ -69,6 +70,13 @@ export class Ong {
     { cascade: true, eager: true }
   )
   ong_contacts: OngContact[];
+
+  @OneToMany(
+    () => User, 
+    (user) => user.ong, 
+    { cascade: true }
+  )
+  ong_users: User[];
 
   @Expose({ name: 'thumb_url' })
   getThumbUrl(): string | null {
