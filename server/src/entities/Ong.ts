@@ -3,6 +3,7 @@ import { Expose } from 'class-transformer';
 
 import { uploadConfig } from '@/config/upload';
 import { OngSocialLink } from './OngSocialLink';
+import { OngContact } from './OngContact';
 
 @Entity('ongs')
 export class Ong {
@@ -45,6 +46,13 @@ export class Ong {
     { cascade: true, nullable: true }
   )
   ong_social_links?: OngSocialLink[];
+
+  @OneToMany(
+    () => OngContact, 
+    (ongContact) => ongContact.ong, 
+    { cascade: true }
+  )
+  ong_contacts: OngContact[];
 
   @Expose({ name: 'thumb_url' })
   getThumbUrl(): string | null {
