@@ -4,6 +4,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
@@ -11,6 +12,7 @@ import {
 
 import { Ong } from './Ong';
 import { UserAddress } from './UserAddress';
+import { ProjectDonation } from './ProjectDonation';
 
 @Entity('users')
 export class User {
@@ -60,4 +62,11 @@ export class User {
   @ManyToOne(() => Ong, (ong) => ong.ong_users)
   @JoinColumn({ name: 'ong_users' })
   ong: Ong;
+
+  @OneToMany(
+    () => ProjectDonation, 
+    (projectDonation) => projectDonation.user,
+    { cascade: true }
+  )
+  donations: ProjectDonation[];
 }

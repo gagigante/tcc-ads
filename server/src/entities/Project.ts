@@ -2,24 +2,25 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  UpdateDateColumn, 
 } from 'typeorm';
 import { Expose } from 'class-transformer';
 
+import { Ong } from './Ong';
+import { ProjectDonation } from './ProjectDonation';
 import { uploadConfig } from '@/config/upload';
-import { OngSocialLink } from './OngSocialLink';
-import { OngContact } from './OngContact';
-import { OngAddress } from './OngAddress';
-import { Project } from './Project';
-import { User } from './User';
 
-@Entity('ongs')
-export class Ong {
+@Entity('projects')
+export class Project {
   @PrimaryGeneratedColumn('increment')
   id: number;
+
+  @Column()
+  ong_id: number;
 
   @Column()
   name: string;
@@ -27,8 +28,8 @@ export class Ong {
   @Column({ type: 'text' })
   description: string;
 
-  @Column({ unique: true })
-  cpnj: string;
+  @Column({ type: 'text' })
+  donation_description: string;
 
   @Column()
   thumb_url: string;
@@ -37,13 +38,10 @@ export class Ong {
   banner_url: string;
 
   @Column({ nullable: true })
-  website_url: string;
+  donation_value_goal?: number;
 
   @Column({ nullable: true })
-  whatsapp_url: string;
-
-  @Column({ default: false })
-  is_active: boolean;
+  donation_goal?: number;
 
   @CreateDateColumn()
   created_at: Date;
@@ -51,40 +49,16 @@ export class Ong {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @OneToOne(
-    () => OngAddress, 
-    (ongAddress) => ongAddress.ong,
-    { cascade: true, eager: true }
-  )
-  ong_address: OngAddress;
-
   @OneToMany(
-    () => OngSocialLink, 
-    (ongSocialLink) => ongSocialLink.ong, 
-    { cascade: true, eager: true }
-  )
-  ong_social_links: OngSocialLink[];
-
-  @OneToMany(
-    () => OngContact, 
-    (ongContact) => ongContact.ong,
-    { cascade: true, eager: true }
-  )
-  ong_contacts: OngContact[];
-
-  @OneToMany(
-    () => Project, 
-    (ongProjects) => ongProjects.ong, 
+    () => ProjectDonation, 
+    (projectDonation) => projectDonation.project, 
     { cascade: true }
   )
-  projects: Project[];
-
-  @OneToMany(
-    () => User, 
-    (user) => user.ong, 
-    { cascade: true }
-  )
-  ong_users: User[];
+  donations: ProjectDonation[];
+    
+  @ManyToOne(() => Ong, (ong) => ong.projects)
+  @JoinColumn({ name: 'projects' })
+  ong: Ong;
 
   @Expose({ name: 'thumb_url' })
   getThumbUrl(): string | null {

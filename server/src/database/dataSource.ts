@@ -6,6 +6,8 @@ import { Ong } from '@/entities/Ong';
 import { OngAddress } from '@/entities/OngAddress';
 import { OngSocialLink } from '@/entities/OngSocialLink';
 import { OngContact } from '@/entities/OngContact';
+import { Project } from '@/entities/Project';
+import { ProjectDonation } from '@/entities/ProjectDonation';
 
 export const appDataSource = new DataSource({
   type: 'postgres',
@@ -23,5 +25,7 @@ export const appDataSource = new DataSource({
     OngAddress,
     OngSocialLink,
     OngContact,
+    Project,
+    ProjectDonation,
   ],
 });
