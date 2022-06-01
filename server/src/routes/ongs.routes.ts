@@ -10,6 +10,11 @@ const ongsController = new OngsController();
 
 ongsRouter.get(
   '/',
+  celebrate({
+    [Segments.QUERY]: {
+      search: Joi.string(),
+    },
+  }),
   ongsController.index,
 );
 

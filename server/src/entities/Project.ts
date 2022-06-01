@@ -57,7 +57,7 @@ export class Project {
   donations: ProjectDonation[];
     
   @ManyToOne(() => Ong, (ong) => ong.projects)
-  @JoinColumn({ name: 'projects' })
+  @JoinColumn({ name: 'ong_id' })
   ong: Ong;
 
   @Expose({ name: 'thumb_url' })
