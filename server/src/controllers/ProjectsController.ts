@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import { GetProjectsUseCase } from '@/useCases/GetProjectsUseCase';
-import { GetProjectById } from '@/useCases/GetProjectById';
+import { GetProjectByIdUseCase } from '@/useCases/GetProjectByIdUseCase';
 
 export class ProjectsController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -18,9 +18,9 @@ export class ProjectsController {
   public async show(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
 
-    const getProjectById = container.resolve(GetProjectById);
+    const getProjectByIdUseCase = container.resolve(GetProjectByIdUseCase);
 
-    const project = await getProjectById.execute(Number(id));
+    const project = await getProjectByIdUseCase.execute(Number(id));
 
     return response.json(project);
   }
