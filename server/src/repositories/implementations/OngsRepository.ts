@@ -24,7 +24,7 @@ export class OngsRepository implements IOngsRepository {
     return ongs; 
   }
 
-  public async getById(id: number): Promise<Ong> {
+  public async getById(id: number): Promise<Ong | null> {
     const ong = await this.repository.findOne({
       where: { id },
     });

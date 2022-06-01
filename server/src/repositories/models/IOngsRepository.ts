@@ -5,7 +5,7 @@ import { ICreateOngDto } from '@/dtos/ICreateOngDto';
 
 export interface IOngsRepository {
   getAll(query?: FindOptionsWhere<Ong> | FindOptionsWhere<Ong>[]): Promise<Ong[]>;
-  getById(id: number): Promise<Ong | undefined>;
+  getById(id: number): Promise<Ong | null>;
   create(data: ICreateOngDto): Ong;
   save(user: Ong): Promise<Ong>;
 }
