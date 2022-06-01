@@ -17,7 +17,7 @@ export class GetActiveOngByIdUseCase {
       throw new AppError('Invalid ID');
     }
 
-    const ong = await this.ongsRepository.getById(id);
+    const ong = await this.ongsRepository.getOngById(id);
 
     if (!ong) {
       throw new AppError('Ong was not found', 404);

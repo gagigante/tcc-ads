@@ -13,7 +13,7 @@ export class GetActiveOngsUseCase {
   ) {}
 
   public async execute(searchTerm?: string): Promise<Ong[]> {
-    const ongs = await this.ongsRepository.getAll({ 
+    const ongs = await this.ongsRepository.getAllOngs({ 
       is_active: true,
       name: ILike('%' + searchTerm + '%'),
      });

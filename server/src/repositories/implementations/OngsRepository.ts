@@ -14,7 +14,7 @@ export class OngsRepository implements IOngsRepository {
     this.repository = appDataSource.getRepository(Ong);
   }
 
-  public async getAll(
+  public async getAllOngs(
     query?: FindOptionsWhere<Ong> | FindOptionsWhere<Ong>[]
   ): Promise<Ong[]> {
     const ongs = await this.repository.find({
@@ -24,7 +24,7 @@ export class OngsRepository implements IOngsRepository {
     return ongs; 
   }
 
-  public async getById(id: number): Promise<Ong | null> {
+  public async getOngById(id: number): Promise<Ong | null> {
     const ong = await this.repository.findOne({
       where: { id },
     });
@@ -38,7 +38,7 @@ export class OngsRepository implements IOngsRepository {
     return ong;
   }
 
-  public async save(ong: Ong): Promise<Ong> {
+  public save(ong: Ong): Promise<Ong> {
     return this.repository.save(ong);
   }
 }
