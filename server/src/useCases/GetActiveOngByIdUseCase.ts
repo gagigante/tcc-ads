@@ -23,6 +23,10 @@ export class GetActiveOngByIdUseCase {
       throw new AppError('Ong was not found', 404);
     }
 
+    if (!ong.is_active) {
+      throw new AppError('Ong was not found', 404);
+    }
+
     return instanceToInstance(ong);
   }
 }
