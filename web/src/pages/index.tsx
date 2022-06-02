@@ -5,44 +5,17 @@ import { CardItem } from '../components/CardItem'
 import { Header } from '../components/Header'
 
 import styles from '../styles/pages/home.module.scss'
+import { api } from '../services/api'
 
 type Data = {
   id: number;
   name: string;
-  thumb: string;
+  thumb_url: string;
 }
 
 type HomeProps = {
   ongs: Data[];
 }
-
-const DATA = [
-  {
-    id: 1,
-    name: 'Nome da ONG',
-    thumb: 'https://direcaocultura.com.br/wp-content/uploads/2017/01/ong-460x290.jpg',
-  },
-  {
-    id: 2,
-    name: 'Nome da ONG',
-    thumb: 'https://direcaocultura.com.br/wp-content/uploads/2017/01/ong-460x290.jpg',
-  },
-  {
-    id: 3,
-    name: 'Nome da ONG',
-    thumb: 'https://direcaocultura.com.br/wp-content/uploads/2017/01/ong-460x290.jpg',
-  },
-  {
-    id: 4,
-    name: 'Nome da ONG',
-    thumb: 'https://direcaocultura.com.br/wp-content/uploads/2017/01/ong-460x290.jpg',
-  },
-  {
-    id: 5,
-    name: 'Nome da ONG',
-    thumb: 'https://direcaocultura.com.br/wp-content/uploads/2017/01/ong-460x290.jpg',
-  },
-]
 
 const Home: NextPage<HomeProps> = ({ ongs }) => {
   const [listType, setListType] = useState<'ongs' | 'projects'>('ongs')
@@ -50,6 +23,8 @@ const Home: NextPage<HomeProps> = ({ ongs }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [isFirstLoad, setIsFirstLoad] = useState(true);
+
+  console.log({ data })
 
   useEffect(() => {
     if (isFirstLoad) {
@@ -61,14 +36,30 @@ const Home: NextPage<HomeProps> = ({ ongs }) => {
     fetchData(listType, searchText)
   }, [listType, searchText])
 
-  // TODO: Fetch data from server
   async function fetchData(type: 'ongs' | 'projects', search: string) {
-    console.log('fetchData', { type, search })
     setIsLoading(true)
 
-    setTimeout(() => {
+    if (type === 'ongs') {
+      const { data: ongs } = await api.get('ongs', {
+        params: {
+          ...(search && { search })
+        },
+      });
+
+      setData(ongs);
       setIsLoading(false)
-    }, 1000);
+
+      return;
+    }
+
+    const { data: projects } = await api.get('projects', {
+      params: {
+        ...(search && { search })
+      },
+    });
+
+    setData(projects);
+    setIsLoading(false)
   }
 
   return (
@@ -97,31 +88,30 @@ const Home: NextPage<HomeProps> = ({ ongs }) => {
           </div>
         </div>
         
-        {isLoading 
-          ? <h3>Carregando...</h3> 
-          : (
-            <div className={styles.grid}>
-              {data.map(item => (
-                <CardItem 
-                  key={item.id}
-                  title={item.name}
-                  imageUrl={item.thumb}
-                  redirectPath={`/${listType}/${item.id}`}
-                />
-              ))}
-            </div>
-          )
-        }
+        <div className={styles.grid}>
+          {isLoading 
+            ? <h3>Carregando...</h3> 
+            : data.map(item => (
+              <CardItem 
+                key={item.id}
+                title={item.name}
+                imageUrl={item.thumb_url}
+                redirectPath={`/${listType}/${item.id}`}
+              />
+            ))
+          }
+        </div>
       </div>     
     </div>
   )
 }
 
-// TODO: Fetch data from server
 export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
+  const { data } = await api.get<Data[]>('ongs');
+
   return {
     props: {
-      ongs: DATA,
+      ongs: data,
     }
   }
 }
