@@ -12,73 +12,28 @@ import { CardItem } from '../../components/CardItem'
 import styles from '../../styles/pages/ongs.module.scss'
 
 import { getSocialLinkIcon } from '../../utils/getSocialLinkIcon'
+import { api } from '../../services/api'
+import { Ong } from '../../models/Ong'
+import { buildAddress } from '../../utils/buildAddress'
 
-type SocialLink = {
-  type: 'facebook' | 'instagram' | 'twitter';
-  url: string;
-}
-
-type Projects = {
+type Project = {
   id: number;
   name: string;
-  thumb: string;
-}
+  thumb_url: string;
+};
 
 type OngsProps = {
-  coverUrl: string;
-  title: string;
-  description: string;
-  contacts: string[];
-  whatsAppLink?: string;
-  socialLinks: SocialLink[];
-  address: string;
+  ong: Ong;
+  projects: Project[];
   projectsQuantity: number;
-  donationsQuantity: number;
-  ongDocument: string;
-  projects: Projects[];
 }
 
-const DATA = [
-  {
-    id: 1,
-    name: 'Nome do projeto',
-    thumb: 'https://direcaocultura.com.br/wp-content/uploads/2017/01/ong-460x290.jpg',
-  },
-  {
-    id: 2,
-    name: 'Nome do projeto',
-    thumb: 'https://direcaocultura.com.br/wp-content/uploads/2017/01/ong-460x290.jpg',
-  },
-  {
-    id: 3,
-    name: 'Nome do projeto',
-    thumb: 'https://direcaocultura.com.br/wp-content/uploads/2017/01/ong-460x290.jpg',
-  },
-  {
-    id: 4,
-    name: 'Nome do projeto',
-    thumb: 'https://direcaocultura.com.br/wp-content/uploads/2017/01/ong-460x290.jpg',
-  },
-  {
-    id: 5,
-    name: 'Nome do projeto',
-    thumb: 'https://direcaocultura.com.br/wp-content/uploads/2017/01/ong-460x290.jpg',
-  },
-]
-
 const Ongs: NextPage<OngsProps> = ({
-  coverUrl,
-  title,
-  description, 
-  contacts,
-  whatsAppLink,
-  socialLinks,
-  address,
+  ong,
+  projects,
   projectsQuantity,
-  donationsQuantity,
-  ongDocument,
-  projects 
 }) => {
+  console.log({ ong, projects, projectsQuantity })
   const { back, push } = useRouter();
 
   const [data, setData] = useState(projects)
@@ -93,44 +48,47 @@ const Ongs: NextPage<OngsProps> = ({
       return
     }
 
-    fetchProjects()
+    fetchProjects(searchText)
   }, [searchText])
 
-  // TODO: Fetch data from server
-  async function fetchProjects() {
-    console.log('fetchProjects')
+  async function fetchProjects(search: string) {
     setIsLoading(true)
 
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 1000);
-  }
+    const { data: projects } = await api.get(`ongs/${ong.id}/projects`, {
+      params: {
+        ...(search && { search })
+      },
+    });
+
+    setData(projects);
+    setIsLoading(false);
+  };
 
   return (
     <div className={styles.container}>
       <Header hasSearchBar onSearch={(searchTerm) => setSearchText(searchTerm)} />
 
-      <div className={styles.cover} style={{ backgroundImage: `url("${coverUrl}")` }} />
+      <div className={styles.cover} style={{ backgroundImage: `url("${ong.banner_url}")` }} />
 
       <div className={styles.content}>
         <IconButton variant="info" icon={<FiArrowLeft color="#FFFFFF" />} onClick={back} />
         
-        <h1 style={{ marginTop: '2rem' }}>{title}</h1>
+        <h1 style={{ marginTop: '2rem' }}>{ong.name}</h1>
 
         <div className={styles.ongData}>
           <div className={styles.info}>
-            <p className={styles.text}>{description}</p>
+            <p className={styles.text}>{ong.description}</p>
 
             <div className={styles.block}>
               <h3>Contatos</h3>
               <hr />
 
-              {contacts.map(item => (
-                <p key={item}>{item}</p>
+              {ong.ong_contacts.map(({ contact }) => (
+                <p key={contact}>{contact}</p>
               ))}
 
-              {whatsAppLink && (
-                <a href={whatsAppLink} target="_blank" rel="noreferrer">
+              {ong.whatsapp_url && (
+                <a href={ong.whatsapp_url} target="_blank" rel="noreferrer">
                   <Button text="Entrar em contato por WhatsApp" variant="success" />
                 </a>
               )}
@@ -142,27 +100,27 @@ const Ongs: NextPage<OngsProps> = ({
               <hr />
 
               <div>
-                {socialLinks.map(item => (
+                {ong.ong_social_links.map(({ social_link_url, social_link_type }) => (
                   <IconButton 
-                    key={item.url} 
+                    key={social_link_type} 
                     variant="info" 
-                    icon={getSocialLinkIcon(item.type)}
-                    onClick={() => push(item.url)}
+                    icon={getSocialLinkIcon(social_link_type)}
+                    onClick={() => push(social_link_url)}
                   />
                 ))}
               </div>
 
             </div>
 
-            <p className={styles.text}>{address}</p>
-            
-            <p className={styles.text}>CPNJ: {ongDocument}</p>
+            {!!ong.website_url && <p className={styles.text}>{ong.website_url}</p>}
+
+            <p className={styles.text}>{buildAddress(ong.ong_address)}</p>
+
+            <p className={styles.text}>CPNJ: {ong.cpnj}</p>
           </div>
 
           <div className={styles.metadata}>
             <InfoCard icon={<FiHeart />} value={projectsQuantity} label="Projetos" />
-
-            <InfoCard icon={<FiHeart />} value={donationsQuantity} label="Doações recebidas" />
           </div>
         </div>
 
@@ -177,7 +135,7 @@ const Ongs: NextPage<OngsProps> = ({
                   <CardItem 
                     key={item.id}
                     title={item.name}
-                    imageUrl={item.thumb}
+                    imageUrl={item.thumb_url}
                     redirectPath={`/projects/${item.id}`}
                   />
                 ))}
@@ -190,33 +148,26 @@ const Ongs: NextPage<OngsProps> = ({
   )
 }
 
-// TODO: Fetch data from server
-export const getServerSideProps: GetServerSideProps<OngsProps> = async () => {
+export const getServerSideProps: GetServerSideProps<OngsProps> = async (context) => {
+  const { id } = context.params as { id: string };
+
+  const [
+    { data: ong }, 
+    { data: projects }, 
+    { data: projectsQuantity }
+  ] = await Promise.all([
+    api.get<Ong>(`ongs/${id}`), 
+    api.get<Project[]>(`ongs/${id}/projects`),
+    api.get<{ projects: number }>(`ongs/${id}/projects/count`),
+  ]);
+  
   return {
     props: {
-      coverUrl: 'https://direcaocultura.com.br/wp-content/uploads/2017/01/ong-460x290.jpg',
-      title: 'Nome da ONG',
-      description: `
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure 
-        dolor in reprehenderit
-      `,
-      contacts: ['(11) 99999-9999', '9999-9999', 'ong@example.com'],
-      whatsAppLink: 'http://google.com',
-      socialLinks: [
-        { type: 'facebook', url: 'http://www.google.com' },
-        { type: 'instagram', url: 'http://www.google.com' },
-        { type: 'twitter', url: 'http://www.google.com' },
-      ],
-      address: 'Rua Calixtro Finelli, 51 - Jardim Primavera 12970000',
-      projectsQuantity: 99,
-      donationsQuantity: 99,
-      ongDocument: '03.452.004/0001-07',
-      projects: DATA,
+      ong, 
+      projects,
+      projectsQuantity: projectsQuantity.projects,
     }
-  }
+  };
 }
 
 export default Ongs
