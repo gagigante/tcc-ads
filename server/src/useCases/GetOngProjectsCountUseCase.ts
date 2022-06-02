@@ -1,18 +1,20 @@
 import { injectable, inject } from 'tsyringe';
-import { instanceToInstance } from 'class-transformer';
 
-import { Ong } from '@/entities/Ong';
 import { IOngsRepository } from '@/repositories/models/IOngsRepository';
+import { IProjectsRepository } from '@/repositories/models/IProjectsRepository';
 import { AppError } from '@/errors/AppError';
 
 @injectable()
-export class GetActiveOngByIdUseCase {
+export class GetOngProjectsCountUseCase {
   constructor(
     @inject('OngsRepository')
     private ongsRepository: IOngsRepository,
+
+    @inject('ProjectsRepository')
+    private projectsRepository: IProjectsRepository,
   ) {}
 
-  public async execute(ongId: number): Promise<Ong> {
+  public async execute(ongId: number, searchTerm?: string): Promise<number> {
     if (Number.isNaN(ongId)) {
       throw new AppError('Invalid ID');
     }
@@ -27,6 +29,8 @@ export class GetActiveOngByIdUseCase {
       throw new AppError('Ong was not found', 404);
     }
 
-    return instanceToInstance(ong);
+    const projectsCount = await this.projectsRepository.countOngProjects(ongId);
+
+    return projectsCount;
   }
 }

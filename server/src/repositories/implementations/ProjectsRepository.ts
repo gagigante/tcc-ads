@@ -24,7 +24,7 @@ export class ProjectsRepository implements IProjectsRepository {
     return projects; 
   }
 
-  public async getProjectById(id: number): Promise<Project> {
+  public async getProjectById(id: number): Promise<Project | null> {
     const projects = await this.repository.findOne({
       where: { id },
     });

@@ -12,12 +12,12 @@ export class GetProjectByIdUseCase {
     private projectsRepository: IProjectsRepository,
   ) {}
 
-  public async execute(id: number): Promise<Project> {
-    if (Number.isNaN(id)) {
+  public async execute(projectId: number): Promise<Project> {
+    if (Number.isNaN(projectId)) {
       throw new AppError('Invalid ID');
     }
 
-    const project = await this.projectsRepository.getProjectById(id);
+    const project = await this.projectsRepository.getProjectById(projectId);
 
     if (!project) {
       throw new AppError('Project was not found', 404);
