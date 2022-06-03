@@ -11,6 +11,9 @@ import { ProjectsRepository } from '@/repositories/implementations/ProjectsRepos
 import { IProjectDonationsRepository } from '@/repositories/models/IProjectDonationsRepository';
 import { ProjectDonationsRepository } from '@/repositories/implementations/ProjectDonationsRepository';
 
+import { IUsersRepository } from '@/repositories/models/IUsersRepository';
+import { UsersRepository } from '@/repositories/implementations/UsersRepository';
+
 container.registerSingleton<IOngsRepository>(
   'OngsRepository',
   OngsRepository,
@@ -24,4 +27,9 @@ container.registerSingleton<IProjectsRepository>(
 container.registerSingleton<IProjectDonationsRepository>(
   'ProjectDonationsRepository',
   ProjectDonationsRepository,
+);
+
+container.registerSingleton<IUsersRepository>(
+  'UsersRepository',
+  UsersRepository,
 );
