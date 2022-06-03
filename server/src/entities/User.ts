@@ -60,7 +60,7 @@ export class User {
   user_address: UserAddress;
 
   @ManyToOne(() => Ong, (ong) => ong.ong_users)
-  @JoinColumn({ name: 'ong_users' })
+  @JoinColumn({ name: 'ong_id' })
   ong: Ong;
 
   @OneToMany(

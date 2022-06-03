@@ -22,7 +22,7 @@ export class ProjectDonation {
   @Column()
   user_id: number;
 
-  @Column()
+  @Column({ default: 'dinheiro' })
   type: 'dinheiro' | 'outro';
 
   @Column({ nullable: true })

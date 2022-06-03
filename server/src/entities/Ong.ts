@@ -81,8 +81,8 @@ export class Ong {
 
   @OneToMany(
     () => User, 
-    (user) => user.ong, 
-    { cascade: true }
+    (user) => user.ong,
+    { onDelete: 'SET NULL', onUpdate: 'SET NULL'}
   )
   ong_users: User[];
 

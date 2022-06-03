@@ -33,7 +33,6 @@ const Ongs: NextPage<OngsProps> = ({
   projects,
   projectsQuantity,
 }) => {
-  console.log({ ong, projects, projectsQuantity })
   const { back, push } = useRouter();
 
   const [data, setData] = useState(projects)

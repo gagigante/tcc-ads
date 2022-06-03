@@ -24,8 +24,6 @@ const Home: NextPage<HomeProps> = ({ ongs }) => {
   const [searchText, setSearchText] = useState('')
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
-  console.log({ data })
-
   useEffect(() => {
     if (isFirstLoad) {
       setIsFirstLoad(false)
