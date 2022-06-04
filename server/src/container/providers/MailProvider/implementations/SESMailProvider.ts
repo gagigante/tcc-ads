@@ -9,7 +9,7 @@ import { ISendMailDto } from '../dtos/ISendMailDto';
 import { mailConfig } from '@/config/mail';
 
 @injectable()
-export default class SESMailProvider implements IMailProvider {
+export class SESMailProvider implements IMailProvider {
   private client: Transporter;
 
   constructor(
