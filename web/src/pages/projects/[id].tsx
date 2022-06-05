@@ -48,16 +48,16 @@ const Projects: NextPage<ProjectsProps> = ({
       <div className={styles.container}>
         <Header />
 
-        <div className={styles.cover} style={{ backgroundImage: `url("${ong.banner_url}")` }} />
+        <div className={styles.cover} style={{ backgroundImage: `url("${project.banner_url}")` }} />
 
         <div className={styles.content}>
           <IconButton variant="info" icon={<FiArrowLeft color="#FFFFFF" />} onClick={back} />
           
-          <h1 style={{ marginTop: '2rem' }}>{ong.name}</h1>
+          <h1 style={{ marginTop: '2rem' }}>{project.name}</h1>
 
-          <div className={styles.ongData}>
+          <div className={styles.projectData}>
             <div className={styles.info}>
-              <p className={styles.text}>{ong.description}</p>           
+              <p className={styles.text}>{project.description}</p>           
 
               <div className={styles.block}>
                 <h3>Contatos</h3>
