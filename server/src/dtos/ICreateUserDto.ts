@@ -8,4 +8,5 @@ export interface ICreateUserDto {
   password: string;
   role: 'doador' | 'colaborador' | 'gestor';
   is_active: boolean;
+  activation_token?: string;
 }

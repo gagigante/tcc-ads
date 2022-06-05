@@ -46,6 +46,9 @@ export class User {
   @Column()
   is_active: boolean;
 
+  @Column({ nullable: true })
+  activation_token: string;
+
   @CreateDateColumn()
   created_at: Date;
 

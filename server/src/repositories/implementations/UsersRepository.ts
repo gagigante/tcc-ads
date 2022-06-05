@@ -37,6 +37,16 @@ export class UsersRepository implements IUsersRepository {
     return user;
   }
 
+  public async getUserByPredicate(
+    query?: FindOptionsWhere<User> | FindOptionsWhere<User>
+  ): Promise<User | null> {
+    const user = await this.repository.findOne({
+      where: query
+    });
+
+    return user;
+  }
+
   public create(data: ICreateUserDto): User {
     const user = this.repository.create(data);
 

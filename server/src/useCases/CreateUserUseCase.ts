@@ -1,4 +1,5 @@
 import { injectable, inject } from 'tsyringe';
+import { v4 as uuidv4 } from 'uuid';
 
 import { IUsersRepository } from '@/repositories/models/IUsersRepository';
 import { IHashProvider } from '@/container/providers/HashProvider/models/IHashProvider';
@@ -33,10 +34,22 @@ export class CreateUserUseCase {
     birth_date,
     password,
    }: IRequestDTO): Promise<User> {
-    const checkUserExists = await this.usersRepository.getUserByEmail(email);
+    let checkUserExists = await this.usersRepository.getUserByEmail(email);
 
     if (checkUserExists) {
       throw new AppError('Email already in use');
+    }
+
+    checkUserExists = await this.usersRepository.getUserByPredicate({ cpf });
+
+    if (checkUserExists) {
+      throw new AppError('CPF already in use');
+    }
+
+    checkUserExists = await this.usersRepository.getUserByPredicate({ phone });
+
+    if (checkUserExists) {
+      throw new AppError('Phone number already in use');
     }
 
     const hashedPassword = await this.hashProvider.generateHash(password);
@@ -50,6 +63,7 @@ export class CreateUserUseCase {
       password: hashedPassword,
       role: 'doador',
       is_active: false,
+      activation_token: uuidv4(),
     });
 
     await this.usersRepository.save(user);

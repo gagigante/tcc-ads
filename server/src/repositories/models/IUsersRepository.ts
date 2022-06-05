@@ -9,6 +9,9 @@ export interface IUsersRepository {
   ): Promise<User[]>;
   getUserByEmail(email: string): Promise<User | null>;
   getUserById(id: number): Promise<User | null>;
+  getUserByPredicate(
+    query?: FindOptionsWhere<User> | FindOptionsWhere<User>
+  ): Promise<User | null>
   create(data: ICreateUserDto): User;
   save(user: User): Promise<User>;
 }
