@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import { CreateUserUseCase } from '@/useCases/CreateUserUseCase';
+import { SendUserValidationEmailUseCase } from '@/useCases/SendUserValidationEmailUseCase';
 
 export class UserController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -15,6 +16,7 @@ export class UserController {
     } = request.body;
 
     const createUserUseCase = container.resolve(CreateUserUseCase);
+    const sendUserValidationEmailUseCase = container.resolve(SendUserValidationEmailUseCase);
 
     const user = await createUserUseCase.execute({
       name, 
@@ -24,6 +26,8 @@ export class UserController {
       birth_date,
       password,
     });
+
+    await sendUserValidationEmailUseCase.execute(user.id);
 
     return response.json(user);
   }
