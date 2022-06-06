@@ -4,12 +4,14 @@ import { celebrate, Joi, Segments } from 'celebrate';
 import { ensureAuthenticated } from '@/middlewares/ensureAuthenticated';
 import { UserController } from '@/controllers/UserController';
 import { ActivateUserController } from '@/controllers/ActivateUserController';
+import { UserDonationsController } from '@/controllers/UserDonationsController';
 
 // http://localhost:3333/users
 const usersRouter = Router();
 
 const userController = new UserController();
 const activateUserController = new ActivateUserController();
+const userDonationsController = new UserDonationsController();
 
 usersRouter.post(
   '/',
@@ -52,6 +54,12 @@ usersRouter.patch(
     },
   }),
   activateUserController.create,
+);
+
+usersRouter.get(
+  '/donations',
+  ensureAuthenticated,
+  userDonationsController.index,
 );
 
 export { usersRouter };

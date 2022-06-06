@@ -7,7 +7,6 @@ import { IOngsRepository } from '@/repositories/models/IOngsRepository';
 import { IProjectsRepository } from '@/repositories/models/IProjectsRepository';
 import { AppError } from '@/errors/AppError';
 
-
 @injectable()
 export class GetOngProjectsUseCase {
   constructor(

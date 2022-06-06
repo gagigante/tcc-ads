@@ -38,6 +38,7 @@ export class User {
   birth_date: Date;
 
   @Column()
+  @Exclude()
   password: string;
 
   @Column({ default: 'doador' })

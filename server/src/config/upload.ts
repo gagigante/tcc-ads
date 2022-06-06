@@ -32,7 +32,7 @@ export const uploadConfig = {
       destination: tmpFolder,
       filename(_, file, cb) {
         const fileHash = crypto.randomBytes(10).toString('hex');
-        const filename = `${fileHash}-${file.originalname}`;
+        const filename = `${fileHash}-${file.originalname}`.replaceAll(' ', '-');
 
         return cb(null, filename);
       },

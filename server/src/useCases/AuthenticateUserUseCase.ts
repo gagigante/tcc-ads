@@ -1,5 +1,6 @@
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
+import { instanceToInstance } from 'class-transformer';
 
 import { authConfig } from '@/config/auth';
 import { User } from '@/entities/User';
@@ -54,6 +55,6 @@ export class AuthenticateUserUseCase {
       expiresIn
     }, secret);
 
-    return { user, token };
+    return { user: instanceToInstance(user), token };
   }
 }

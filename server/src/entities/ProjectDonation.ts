@@ -34,6 +34,9 @@ export class ProjectDonation {
   @Column({ nullable: true })
   file: string;
 
+  @Column({ nullable: true, default: 'pendente' })
+  status: 'pendente' | 'realizado';
+
   @CreateDateColumn()
   created_at: Date;
 
