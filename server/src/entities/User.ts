@@ -69,7 +69,7 @@ export class User {
   @OneToMany(
     () => ProjectDonation, 
     (projectDonation) => projectDonation.user,
-    { cascade: true }
+    { onDelete: 'SET NULL' }
   )
   donations: ProjectDonation[];
 }

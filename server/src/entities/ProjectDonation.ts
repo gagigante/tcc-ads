@@ -19,7 +19,7 @@ export class ProjectDonation {
   @Column()
   project_id: number;
 
-  @Column()
+  @Column({ nullable: true })
   user_id: number;
 
   @Column({ default: 'dinheiro' })
