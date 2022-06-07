@@ -20,6 +20,11 @@
   div.controls {
     display: flex;
 
+    .links {
+      display: flex;
+      align-items: center;
+    }
+
     button {
       margin-left: 0.5rem;
     }
