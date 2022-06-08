@@ -45,9 +45,6 @@ export class UpdateUserUseCase {
 
     let checkUserExists = await this.usersRepository.getUserByEmail(email);
 
-    console.log({ email })
-    console.log({ userId: user.id, checkUserExists: checkUserExists.id });
-
     if (checkUserExists && checkUserExists.id !== user_id) {
       throw new AppError('E-mail already in use');
     }
