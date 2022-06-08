@@ -30,7 +30,7 @@ export class SendUserValidationEmailUseCase {
       throw new AppError('User was not found', 404);
     }
 
-    const forgotPasswordTemplate = path.resolve(
+    const validatePasswordTemplate = path.resolve(
       __dirname,
       '..',
       'templates',
@@ -38,7 +38,7 @@ export class SendUserValidationEmailUseCase {
     );
 
     const html = await this.mailTemplateProvider.parse({
-      file: forgotPasswordTemplate,
+      file: validatePasswordTemplate,
       variables: {
         name: user.name,
         link: `${process.env.APP_CLIENT_URL}/validate-user?token=${user.activation_token}`,

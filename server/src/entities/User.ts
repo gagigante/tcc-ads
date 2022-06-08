@@ -51,6 +51,9 @@ export class User {
   @Column({ nullable: true })
   activation_token: string;
 
+  @Column({ nullable: true })
+  reset_password_token: string;
+
   @CreateDateColumn()
   created_at: Date;
 
