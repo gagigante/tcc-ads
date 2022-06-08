@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 import { Ong } from './Ong';
 import { UserAddress } from './UserAddress';

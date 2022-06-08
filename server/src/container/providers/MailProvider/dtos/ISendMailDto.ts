@@ -9,5 +9,5 @@ export interface ISendMailDto {
   to: IMailContact;
   from?: IMailContact;
   subject: string;
-  templateData: IParseMailTemplateDTO;
+  html: string;
 }

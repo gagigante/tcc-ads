@@ -1,21 +1,15 @@
 import nodemailer, { Transporter } from 'nodemailer';
 import aws from 'aws-sdk';
-import { injectable, inject } from 'tsyringe';
 
-import { IMailTemplateProvider } from '@/container/providers/MailTemplateProvider/models/IMailTemplateProvider';
 import { IMailProvider } from '../models/IMailProvider';
 import { ISendMailDto } from '../dtos/ISendMailDto';
 
 import { mailConfig } from '@/config/mail';
 
-@injectable()
 export class SESMailProvider implements IMailProvider {
   private client: Transporter;
 
-  constructor(
-    @inject('MailTemplateProvider')
-    private mailTemplateProvider: IMailTemplateProvider,
-  ) {
+  constructor() {
     this.client = nodemailer.createTransport({
       SES: new aws.SES({
         apiVersion: '2010-12-01',
@@ -28,7 +22,7 @@ export class SESMailProvider implements IMailProvider {
     to,
     from,
     subject,
-    templateData,
+    html,
   }: ISendMailDto): Promise<void> {
     const { name, email } = mailConfig.defaults.from;
 
@@ -42,7 +36,7 @@ export class SESMailProvider implements IMailProvider {
         address: to.email,
       },
       subject,
-      html: await this.mailTemplateProvider.parse(templateData),
+      html,
     });
   }
 }

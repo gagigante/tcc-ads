@@ -4,6 +4,7 @@ import { injectable, inject } from 'tsyringe';
 import { IMailProvider } from '@/container/providers/MailProvider/models/IMailProvider';
 import { IUsersRepository } from '@/repositories/models/IUsersRepository';
 import { AppError } from '@/errors/AppError';
+import { IMailTemplateProvider } from '@/container/providers/MailTemplateProvider/models/IMailTemplateProvider';
 
 @injectable()
 export class SendUserValidationEmailUseCase {
@@ -13,6 +14,9 @@ export class SendUserValidationEmailUseCase {
 
     @inject('MailProvider')
     private mailProvider: IMailProvider,
+
+    @inject('MailTemplateProvider')
+    private mailTemplateProvider: IMailTemplateProvider,
   ) {}
 
   public async execute(userId: number): Promise<void> {
@@ -33,19 +37,21 @@ export class SendUserValidationEmailUseCase {
       'validate_email_template.hbs',
     );
 
-    await this.mailProvider.sendMail({
+    const html = await this.mailTemplateProvider.parse({
+      file: forgotPasswordTemplate,
+      variables: {
+        name: user.name,
+        link: `${process.env.APP_CLIENT_URL}/validate-user?token=${user.activation_token}`,
+      },
+    });
+
+    return this.mailProvider.sendMail({
       to: {
         name: user.name,
         email: user.email,
       },
       subject: '[Doa+] Ative sua conta!',
-      templateData: {
-        file: forgotPasswordTemplate,
-        variables: {
-          name: user.name,
-          link: `${process.env.APP_CLIENT_URL}/validate-user?token=${user.activation_token}`
-        }
-      }
-    })
+      html,
+    });
   }
 }

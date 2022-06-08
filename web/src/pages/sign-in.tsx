@@ -20,8 +20,8 @@ type SignInFormData = {
 };
 
 const signInFormSchema = yup.object({
-  email: yup.string().required('E-mail obrigatório'),
-  password: yup.string().required('Senha obrigatória'),
+  email: yup.string().email().required(),
+  password: yup.string().required(),
 })
 
 const SignIn: NextPage = () => {
@@ -73,7 +73,7 @@ const SignIn: NextPage = () => {
           <LinkButton 
             text="Esqueci minha senha" 
             type="button" 
-            onClick={() => push('/forgot-password')}
+            onClick={() => push('forgot-password')}
           />
         </div>
 
@@ -89,7 +89,7 @@ const SignIn: NextPage = () => {
           <LinkButton 
             text="Criar conta"
             type="button" 
-            onClick={() => push('/sign-up')}
+            onClick={() => push('sign-up')}
           />
         </div>
       </form>

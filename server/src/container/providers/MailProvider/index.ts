@@ -7,11 +7,11 @@ import { SESMailProvider } from './implementations/SESMailProvider';
 import { mailConfig } from '@/config/mail';
 
 const providers = {
-  ethereal: container.resolve(EtherialMailProvider),
-  ses: container.resolve(SESMailProvider),
+  ethereal: EtherialMailProvider,
+  ses: SESMailProvider,
 };
 
-container.registerInstance<IMailProvider>(
+container.registerSingleton<IMailProvider>(
   'MailProvider',
   providers[mailConfig.driver],
 );
