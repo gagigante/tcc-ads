@@ -6,6 +6,7 @@ import { SESMailProvider } from './implementations/SESMailProvider';
 
 import { mailConfig } from '@/config/mail';
 
+// REVIEW
 const providers = {
   ethereal: container.resolve(EtherialMailProvider),
   ses: container.resolve(SESMailProvider),
@@ -13,5 +14,5 @@ const providers = {
 
 container.registerInstance<IMailProvider>(
   'MailProvider',
-  providers[mailConfig.driver],
+  providers['ethereal'],
 );

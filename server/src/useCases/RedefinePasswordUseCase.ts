@@ -34,6 +34,7 @@ export class RedefinePasswordUseCase {
    
     const updatedUser = this.usersRepository.create({
       ...user,
+      reset_password_token: null,
       password: await this.hashProvider.generateHash(password),
     });
 
