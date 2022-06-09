@@ -11,9 +11,11 @@ import { FiLogOut, FiUser } from 'react-icons/fi';
 type HeaderProps = {
   hasSearchBar?: boolean;
   onSearch?: (searchTerm: string) => void;
+  onLoginReturnUrl?: string;
 }
 
-export const Header = ({ 
+export const Header = ({
+  onLoginReturnUrl = '/', 
   hasSearchBar = false, 
   onSearch = () => null
 }: HeaderProps) => {
@@ -38,7 +40,7 @@ export const Header = ({
                 <IconButton 
                   variant="info" 
                   icon={<FiUser color="#FFFFFF" />} 
-                  onClick={() => push('profile')}
+                  onClick={() => push('/profile')}
                 />
 
                 <IconButton 
@@ -47,7 +49,7 @@ export const Header = ({
                   onClick={signOut}
                 />
               </div>
-            : <Button text="Entrar" variant="info" onClick={() => push('/sign-in')} />
+            : <Button text="Entrar" variant="info" onClick={() => push(`/sign-in?return_url=${onLoginReturnUrl}`)} />
           }
         </div>
       </div>

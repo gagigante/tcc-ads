@@ -46,7 +46,7 @@ const Projects: NextPage<ProjectsProps> = ({
   return (
     <>
       <div className={styles.container}>
-        <Header />
+        <Header onLoginReturnUrl={`/projects/${project.id}`} />
 
         <div className={styles.cover} style={{ backgroundImage: `url("${project.banner_url}")` }} />
 

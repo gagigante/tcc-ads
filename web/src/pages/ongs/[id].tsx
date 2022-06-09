@@ -65,7 +65,7 @@ const Ongs: NextPage<OngsProps> = ({
 
   return (
     <div className={styles.container}>
-      <Header hasSearchBar onSearch={(searchTerm) => setSearchText(searchTerm)} />
+      <Header hasSearchBar onSearch={(searchTerm) => setSearchText(searchTerm)} onLoginReturnUrl={`/ongs/${ong.id}`} />
 
       <div className={styles.cover} style={{ backgroundImage: `url("${ong.banner_url}")` }} />
 

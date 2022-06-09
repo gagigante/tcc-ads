@@ -38,6 +38,7 @@ type AuthState  = {
 type SignInCredentials = {
   email: string;
   password: string;
+  return_url?: string;
 }
 
 type AuthContextData = {
@@ -71,7 +72,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return {} as AuthState;
   });
 
-  const signIn = useCallback(async ({ email, password }: SignInCredentials) => {
+  const signIn = useCallback(async ({ email, password, return_url }: SignInCredentials) => {
     try {
       const response = await api.post('sessions', {
         email,
@@ -86,6 +87,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       api.defaults.headers.common.Authorization = `Bearer ${token}`;
   
       setData({ token, user });
+
+      if (return_url) {
+        push(return_url);
+        return;
+      }
+
       push('/');
     } catch {
       alert('Erro ao realizar login. Tente novamente!');

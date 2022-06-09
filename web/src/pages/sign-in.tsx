@@ -25,7 +25,10 @@ const signInFormSchema = yup.object({
 })
 
 const SignIn: NextPage = () => {
-  const { push } = useRouter();
+  const { 
+    push, 
+    query: { return_url } 
+  } = useRouter();
   const { user, signIn } = useAuth();
   const { register, handleSubmit, formState } = useForm<SignInFormData>({
     resolver: yupResolver(signInFormSchema),
@@ -36,9 +39,12 @@ const SignIn: NextPage = () => {
   }, [])
   
   const handleSignIn: SubmitHandler<SignInFormData> = async ({ email, password }) => {
+    const returnUrl = return_url ? String(return_url) : undefined;
+
     await signIn({
       email,
       password,
+      return_url: returnUrl,
     });
   }
 
