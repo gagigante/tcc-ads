@@ -28,10 +28,12 @@ export class SendForgotPasswordMailUseCase {
     if (!user) {
       throw new AppError('User was not found', 404);
     }
-   
+    
+    const resetPasswordToken = uuidv4();
+
     const updatedUser = this.usersRepository.create({
       ...user,
-      reset_password_token: uuidv4(),
+      reset_password_token: resetPasswordToken,
     });
 
     await this.usersRepository.save(updatedUser);
@@ -47,7 +49,7 @@ export class SendForgotPasswordMailUseCase {
       file: forgotPasswordTemplate,
       variables: {
         name: user.name,
-        link: `${process.env.APP_CLIENT_URL}/redefine-password?token=${user.reset_password_token}`,
+        link: `${process.env.APP_CLIENT_URL}/redefine-password?token=${resetPasswordToken}`,
       },
     });
 
