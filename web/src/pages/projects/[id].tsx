@@ -18,6 +18,7 @@ import { Ong } from '../../models/Ong';
 import styles from '../../styles/pages/projects.module.scss'
 import { buildAddress } from '../../utils/buildAddress'
 import { api } from '../../services/api'
+import { formatCurrency } from '../../utils/formatCurrency'
 
 type ProjectsProps = {
   ong: Ong;
@@ -35,13 +36,6 @@ const Projects: NextPage<ProjectsProps> = ({
   const { back, push } = useRouter()
 
   const [isOpen, setIsOpen] = useState(false);
-
-  function formatCurrency(integerValue: number) {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    }).format(integerValue / 100);
-  };
 
   return (
     <>

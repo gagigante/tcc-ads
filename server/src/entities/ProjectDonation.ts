@@ -47,7 +47,7 @@ export class ProjectDonation {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Project, (project) => project.donations)
+  @ManyToOne(() => Project, (project) => project.donations, { eager: true })
   @JoinColumn({ name: 'project_id' })
   project: Project;
 }
