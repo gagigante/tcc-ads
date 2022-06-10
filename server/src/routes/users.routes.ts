@@ -62,4 +62,15 @@ usersRouter.get(
   userDonationsController.index,
 );
 
+usersRouter.get(
+  '/donations/:id',
+  ensureAuthenticated,
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+  }),
+  userDonationsController.show,
+);
+
 export { usersRouter };

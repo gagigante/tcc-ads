@@ -6,7 +6,7 @@ import { AppError } from '@/errors/AppError';
 import { IUsersRepository } from '@/repositories/models/IUsersRepository';
 
 @injectable()
-export class GetUserDonationsUseCase {
+export class GetUserDonationByIdUseCase {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
@@ -15,9 +15,13 @@ export class GetUserDonationsUseCase {
     private projectDonationsRepository: IProjectDonationsRepository,
   ) {}
 
-  public async execute(userId: number): Promise<ProjectDonation[]> {
+  public async execute(userId: number, donationId: number): Promise<ProjectDonation> {
     if (Number.isNaN(userId)) {
-      throw new AppError('Invalid ID');
+      throw new AppError('Invalid user ID');
+    }
+
+    if (Number.isNaN(donationId)) {
+      throw new AppError('Invalid donation ID');
     }
 
     const user = await this.usersRepository.getUserById(userId);
@@ -26,8 +30,16 @@ export class GetUserDonationsUseCase {
       throw new AppError('User was not found', 404);
     }
 
-    const donations = await this.projectDonationsRepository.getUserDonations(userId);
+    const donation = await this.projectDonationsRepository.getProjectDonation(donationId);
 
-    return donations;
+    if (!donation) {
+      throw new AppError('Donation was not found', 404);
+    }
+
+    if (donation.user_id !== userId) {
+      throw new AppError('Donation was not found', 404);
+    }
+
+    return donation;
   }
 }
