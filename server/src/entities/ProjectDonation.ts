@@ -1,3 +1,5 @@
+import { uploadConfig } from '@/config/upload';
+import { Expose } from 'class-transformer';
 import { 
   Column,
   CreateDateColumn,
@@ -50,4 +52,20 @@ export class ProjectDonation {
   @ManyToOne(() => Project, (project) => project.donations, { eager: true })
   @JoinColumn({ name: 'project_id' })
   project: Project;
+
+  @Expose({ name: 'file' })
+  getFileUrl(): string | null {
+    if (!this.file) {
+      return null;
+    }
+
+    switch (uploadConfig.driver) {
+      case 'disk':
+        return `${process.env.APP_API_URL}/files/${this.file}`;
+      case 's3':
+        return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.file}`;
+      default:
+        return null;
+    }
+  }
 }

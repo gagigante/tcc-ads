@@ -4,6 +4,7 @@ import { ProjectDonation } from '@/entities/ProjectDonation';
 import { IProjectDonationsRepository } from '@/repositories/models/IProjectDonationsRepository';
 import { AppError } from '@/errors/AppError';
 import { IUsersRepository } from '@/repositories/models/IUsersRepository';
+import { instanceToInstance } from 'class-transformer';
 
 @injectable()
 export class GetUserDonationByIdUseCase {
@@ -40,6 +41,6 @@ export class GetUserDonationByIdUseCase {
       throw new AppError('Donation was not found', 404);
     }
 
-    return donation;
+    return instanceToInstance(donation);
   }
 }
