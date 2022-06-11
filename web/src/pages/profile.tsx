@@ -187,7 +187,7 @@ const Profile: NextPage = () => {
               />
             </div>
             
-            {/* REVIEW */}
+            {/* REVIEW: FORMAT DATE TO PT-BR */}
             <div>
               <Input 
                 type="date" 
@@ -261,7 +261,7 @@ const Profile: NextPage = () => {
                       <IconButton 
                         icon={<FaEye color="#ffffff" />} 
                         variant="info"
-                        onClick={() => push(`/donations/${donation.id}`)}
+                        onClick={() => push(`donations/${donation.id}`)}
                       /> 
                     </td>
                   </tr>

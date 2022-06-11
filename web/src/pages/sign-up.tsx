@@ -100,6 +100,7 @@ const SignUp: NextPage = () => {
           />
         </div>
 
+        {/* REVIEW: FORMAT DATE TO PT-BR */}
         <div className={styles.inputContainer}>
           <Input             
             type="date" 

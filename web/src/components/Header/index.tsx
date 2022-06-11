@@ -20,7 +20,7 @@ export const Header = ({
   onSearch = () => null
 }: HeaderProps) => {
   const { user, signOut } = useAuth();
-  const { push } = useRouter();
+  const { push, pathname } = useRouter();
   
   return (
     <div className={styles.container}>
@@ -37,11 +37,13 @@ export const Header = ({
 
           {user 
             ? <div className={styles.links}>
-                <IconButton 
-                  variant="info" 
-                  icon={<FiUser color="#FFFFFF" />} 
-                  onClick={() => push('/profile')}
-                />
+                {pathname !== '/profile' && (
+                  <IconButton 
+                    variant="info" 
+                    icon={<FiUser color="#FFFFFF" />} 
+                    onClick={() => push('/profile')}
+                  />
+                )}
 
                 <IconButton 
                   variant="danger" 
