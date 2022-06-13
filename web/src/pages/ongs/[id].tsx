@@ -19,7 +19,7 @@ import { buildAddress } from '../../utils/buildAddress'
 type Project = {
   id: number;
   name: string;
-  thumb_url: string;
+  thumb_url: string | null;
 };
 
 type OngsProps = {

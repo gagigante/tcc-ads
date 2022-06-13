@@ -76,7 +76,7 @@ const Profile: NextPage = () => {
 
       return {
         ...donation,
-        value: null,
+        value: '-',
         created_at: formatDate(donation.created_at),
       };
     });

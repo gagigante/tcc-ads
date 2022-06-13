@@ -3,7 +3,8 @@ export type Ong = {
   cpnj: string;
   name: string;
   description: string;
-  banner_url: string;
+  thumb_url: string | null;  
+  banner_url: string | null;
   ong_contacts: Array<{
     contact: string;
   }>;

@@ -4,7 +4,7 @@ import styles from './styles.module.scss'
 
 type CardItemProps = {
   title: string;
-  imageUrl: string;
+  imageUrl: string | null;
   redirectPath: string;
 }
 
@@ -13,7 +13,8 @@ export const CardItem = ({ title, imageUrl, redirectPath }: CardItemProps) => {
     <Link href={redirectPath}>
       <a style={{ textDecoration: 'none' }}>
         <div className={styles.container}>
-          <img src={imageUrl} alt={title} />
+          <img src={imageUrl ?? '/placeholder.jpg'} alt={title} />
+
           <strong>{title}</strong>
         </div>
       </a>

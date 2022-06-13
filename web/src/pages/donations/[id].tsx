@@ -92,7 +92,7 @@ const Donations: NextPage<DonationsProps> = ({ id }) => {
             </div>
 
             <div>
-              <Input
+              <Textarea
                 name="donation_description"
                 label="Descrição da doação" 
                 defaultValue={donation.description ? donation.description : '-'}

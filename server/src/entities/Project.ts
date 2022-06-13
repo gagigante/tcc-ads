@@ -31,10 +31,10 @@ export class Project {
   @Column({ type: 'text' })
   donation_description: string;
 
-  @Column()
+  @Column({ nullable: true })
   thumb_url: string;
 
-  @Column()
+  @Column({ nullable: true })
   banner_url: string;
 
   @Column({ nullable: true })
