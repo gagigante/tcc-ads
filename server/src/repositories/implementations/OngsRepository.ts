@@ -14,6 +14,16 @@ export class OngsRepository implements IOngsRepository {
     this.repository = appDataSource.getRepository(Ong);
   }
 
+  public async getOng(
+    query?: FindOptionsWhere<Ong> | FindOptionsWhere<Ong>[]
+  ): Promise<Ong> {
+    const ong = await this.repository.findOne({
+      where: query
+    });
+
+    return ong; 
+  }
+
   public async getAllOngs(
     query?: FindOptionsWhere<Ong> | FindOptionsWhere<Ong>[]
   ): Promise<Ong[]> {

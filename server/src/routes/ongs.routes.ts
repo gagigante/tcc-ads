@@ -38,6 +38,24 @@ ongsRouter.post(
   ongsController.create,
 );
 
+ongsRouter.put(
+  '/:id',
+  ensureAuthenticated,
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      description: Joi.string().required(),
+      cnpj: Joi.string().required(), 
+      website_url: Joi.string(),
+      whatsapp_url: Joi.string(),
+    },
+  }),
+  ongsController.update,
+);
+
 ongsRouter.get(
   '/:id',
   celebrate({

@@ -4,6 +4,9 @@ import { Ong } from '@/entities/Ong';
 import { ICreateOngDto } from '@/dtos/ICreateOngDto';
 
 export interface IOngsRepository {
+  getOng(
+    query?: FindOptionsWhere<Ong> | FindOptionsWhere<Ong>[]
+  ): Promise<Ong>;
   getAllOngs(
     query?: FindOptionsWhere<Ong> | FindOptionsWhere<Ong>[]
   ): Promise<Ong[]>;
