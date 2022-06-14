@@ -27,9 +27,11 @@ export class CalculateProjectDonationsUseCase {
 
     const donations = await this.projectDonationsRepository.getProjectDonations(projectId);
 
-    const donationsValue = donations.reduce((acc, item) => {
-      return acc + item.value;
-    }, 0);
+    const donationsValue = donations
+      .filter(donation => donation.status === 'realizado')
+      .reduce((acc, item) => {
+        return acc + item.value;
+      }, 0);
 
     return donationsValue;
   }

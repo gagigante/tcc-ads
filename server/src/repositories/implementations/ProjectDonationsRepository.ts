@@ -45,6 +45,7 @@ export class ProjectDonationsRepository implements IProjectDonationsRepository {
     const donationsCount = await this.repository.count({
       where: {        
         project_id: projectId,
+        status: 'realizado',
       },
     });
     
