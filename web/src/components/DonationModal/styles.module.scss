@@ -1,0 +1,74 @@
+.container {
+  padding: 1rem;
+
+  > h1 {
+    color: #123952;
+    margin-bottom: 2rem;
+  }
+
+  > p {
+    margin-bottom: 1rem;
+    color: #123952;
+  }
+
+  .contact {
+    h3 {
+      color: #123952;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: #123952;
+      margin-left: 0.3rem;
+      margin-bottom: 0.3rem;
+    }
+
+    > a > button {
+      margin-top: 0.5rem;
+    }
+  }
+
+  .donation {
+    h3 {
+      color: #123952;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .donationType {
+      margin-bottom: 1rem;
+
+      button {
+        background-color: transparent;
+        padding: 0.5rem 1rem;
+        border: 1px solid #123952;
+        border-radius: 0.2rem;
+        color: #123952;
+
+        & + button {
+          margin-left: 0.2rem;
+        }
+
+        &.active {
+          color: #ffffff;
+          background-color: #123952;
+        }
+      }
+    }
+
+    form {
+      max-width: 640px;
+      width: 100%;
+
+      > div {
+        margin-bottom: 0.8rem;
+      }
+    }
+
+    .obs {
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      color: #617480;
+    }
+  }
+}

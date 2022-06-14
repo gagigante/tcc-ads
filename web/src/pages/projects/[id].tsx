@@ -19,6 +19,7 @@ import styles from '../../styles/pages/projects.module.scss'
 import { buildAddress } from '../../utils/buildAddress'
 import { api } from '../../services/api'
 import { formatCurrency } from '../../utils/formatCurrency'
+import { useAuth } from '../../hooks/useAuth'
 
 type ProjectsProps = {
   ong: Ong;
@@ -33,9 +34,20 @@ const Projects: NextPage<ProjectsProps> = ({
   donationsQuantity,
   donationsSum,
 }) => {
-  const { back, push } = useRouter()
+  const { back, push } = useRouter();
+  const { user } = useAuth();
 
+  const [donations, setDonations] = useState(donationsQuantity);
+  const [donationsValue, setDonationsValue] = useState(donationsSum);
   const [isOpen, setIsOpen] = useState(false);
+
+  function handleCloseModalAndUpdateDonationsValue(donationValue?: number) {
+    setDonations(prevState => prevState + 1);
+
+    if (donationValue) setDonationsValue(prevState => prevState + donationValue);
+
+    setIsOpen(false);
+  }
 
   return (
     <>
@@ -107,11 +119,11 @@ const Projects: NextPage<ProjectsProps> = ({
                     <strong>Meta de doações: {project.donation_goal}</strong>
                     
                     <ProgressBar 
-                      completed={(donationsQuantity/project.donation_goal) * 100} 
+                      completed={(donations/project.donation_goal) * 100} 
                       isLabelVisible={false} 
                     />
                     
-                    <p>Doações realizadas: {donationsQuantity}</p> 
+                    <p>Doações realizadas: {donations}</p> 
                   </div>
                 )}
 
@@ -120,33 +132,46 @@ const Projects: NextPage<ProjectsProps> = ({
                     <strong>Meta de doações: {formatCurrency(project.donation_value_goal)}</strong>                    
 
                     <ProgressBar 
-                      completed={(donationsSum/project.donation_value_goal) * 100} 
+                      completed={(donationsValue/project.donation_value_goal) * 100} 
                       isLabelVisible={false} 
                     />
                     
-                    <p>Doações realizadas: {formatCurrency(donationsSum)}</p> 
+                    <p>Doações realizadas: {formatCurrency(donationsValue)}</p> 
                   </div>
                 )}
               </div>
               
               <div style={{ marginTop: '2rem' }}>
-                <Button text="Doar" variant="success" fullWidth onClick={() => setIsOpen(true)} />
+                <Button 
+                  text="Doar" 
+                  variant="success" 
+                  fullWidth 
+                  onClick={() => {
+                    if (!user) {
+                      push(`/sign-in?return_url=/projects/${project.id}`);
+                      return;
+                    }
+
+                    setIsOpen(true);
+                  }} 
+                />
               </div>
             </div>
 
             <div className={styles.metadata}>
-              <InfoCard icon={<FiHeart />} value={donationsQuantity} label="Doações recebidas" />
+              <InfoCard icon={<FiHeart />} value={donations} label="Doações recebidas" />
             </div>
           </div>
         </div>
       </div>
 
-      {/* TODO: Create donation */}
-      <DonationModal 
+      <DonationModal
+        projectId={project.id}
+        description={project.donation_description}
         contacts={ong.ong_contacts.map(item => item.contact)}
         whatsAppLink={ong.whatsapp_url}
         isOpen={isOpen} 
-        onClose={() => setIsOpen(false)}
+        onClose={handleCloseModalAndUpdateDonationsValue}
       />
     </>
   )
