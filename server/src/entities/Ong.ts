@@ -28,7 +28,7 @@ export class Ong {
   description: string;
 
   @Column({ unique: true })
-  cpnj: string;
+  cnpj: string;
 
   @Column({ nullable: true })
   thumb_url: string;

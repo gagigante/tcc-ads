@@ -1,6 +1,6 @@
 export type Ong = {
   id: number;
-  cpnj: string;
+  cnpj: string;
   name: string;
   description: string;
   thumb_url: string | null;  

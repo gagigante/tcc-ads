@@ -101,7 +101,7 @@ const Projects: NextPage<ProjectsProps> = ({
 
               <p className={styles.text}>{buildAddress(ong.ong_address)}</p>
 
-              <p className={styles.text}>CPNJ: {ong.cpnj}</p>
+              <p className={styles.text}>CPNJ: {ong.cnpj}</p>
 
               <div className={styles.block}>
                 <h3>Doações</h3>

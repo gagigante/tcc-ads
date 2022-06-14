@@ -4,6 +4,7 @@ import { celebrate, Joi, Segments } from 'celebrate';
 import { OngsController } from '@/controllers/OngsController';
 import { OngProjectsController } from '@/controllers/OngProjectsController';
 import { OngProjectsCountController } from '@/controllers/OngProjectsCountController';
+import { ensureAuthenticated } from '@/middlewares/ensureAuthenticated';
 
 // http://localhost:3333/ongs
 const ongsRouter = Router();
@@ -20,6 +21,21 @@ ongsRouter.get(
     },
   }),
   ongsController.index,
+);
+
+ongsRouter.post(
+  '/',
+  ensureAuthenticated,
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      description: Joi.string().required(),
+      cnpj: Joi.string().required(), 
+      website_url: Joi.string(),
+      whatsapp_url: Joi.string(),
+    },
+  }),
+  ongsController.create,
 );
 
 ongsRouter.get(
