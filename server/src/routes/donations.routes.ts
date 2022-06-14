@@ -18,11 +18,6 @@ donationsRouter.post(
   '/',
   ensureAuthenticated,
   upload.single('file'),
-  // celebrate({
-  //   [Segments.BODY]: {
-  //     // search: Joi.file(),
-  //   },
-  // }),
   donationsController.create,
 );
 
