@@ -1,17 +1,24 @@
 import { Router } from 'express';
 import { celebrate, Joi, Segments } from 'celebrate';
+import multer from 'multer';
 
 import { OngsController } from '@/controllers/OngsController';
 import { OngProjectsController } from '@/controllers/OngProjectsController';
 import { OngProjectsCountController } from '@/controllers/OngProjectsCountController';
 import { ensureAuthenticated } from '@/middlewares/ensureAuthenticated';
+import { OngThumbnailController } from '@/controllers/OngThumbnailController';
+import { OngCoverController } from '@/controllers/OngCoverController';
+import { uploadConfig } from '@/config/upload';
 
 // http://localhost:3333/ongs
 const ongsRouter = Router();
+const upload = multer(uploadConfig.multer);
 
 const ongsController = new OngsController();
 const ongProjectsController = new OngProjectsController();
 const ongProjectsCountController = new OngProjectsCountController();
+const ongThumbnailController = new OngThumbnailController();
+const ongCoverController = new OngCoverController();
 
 ongsRouter.get(
   '/',
@@ -54,6 +61,20 @@ ongsRouter.put(
     },
   }),
   ongsController.update,
+);
+
+ongsRouter.patch(
+  '/:id/thumb',
+  ensureAuthenticated,
+  upload.single('file'),
+  ongThumbnailController.update,
+);
+
+ongsRouter.patch(
+  '/:id/banner',
+  ensureAuthenticated,
+  upload.single('file'),
+  ongCoverController.update,
 );
 
 ongsRouter.get(
