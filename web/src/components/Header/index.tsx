@@ -37,11 +37,19 @@ export const Header = ({
 
           {user 
             ? <div className={styles.links}>
-                {pathname !== '/profile' && (
+                {pathname !== '/profile' && pathname.split('/')[1] !== 'my-ong' && (
                   <IconButton 
                     variant="info" 
                     icon={<FiUser color="#FFFFFF" />} 
                     onClick={() => push('/profile')}
+                  />
+                )}
+
+                {pathname === '/profile' && (
+                  <Button 
+                    variant="info" 
+                    text="Minha ONG"
+                    onClick={() => push('/my-ong')}
                   />
                 )}
 

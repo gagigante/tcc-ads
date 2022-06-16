@@ -21,5 +21,5 @@ export type Ong = {
     district: string;
     street: string;
     number: number,
-  }
+  } | null;
 };

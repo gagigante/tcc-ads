@@ -1,6 +1,6 @@
 export type User = {
   id: number;
-  ong_id: number;
+  ong_id: number | null;
   name: string,
   cpf: string,
   email: string,

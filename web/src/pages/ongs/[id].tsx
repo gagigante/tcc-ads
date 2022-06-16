@@ -112,8 +112,10 @@ const Ongs: NextPage<OngsProps> = ({
             </div>
 
             {!!ong.website_url && <p className={styles.text}>{ong.website_url}</p>}
-
-            <p className={styles.text}>{buildAddress(ong.ong_address)}</p>
+            
+            {ong.ong_address && (
+              <p className={styles.text}>{buildAddress(ong.ong_address)}</p>
+            )}
 
             <p className={styles.text}>CPNJ: {ong.cnpj}</p>
           </div>
