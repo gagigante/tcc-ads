@@ -62,9 +62,9 @@ export class CreateOngUseCase {
       role: 'gestor',
     });
 
-    return instanceToInstance({ 
+    return { 
       ong: instanceToInstance(newOng), 
       user: instanceToInstance(updatedUser),
-    });
+    };
   }
 }

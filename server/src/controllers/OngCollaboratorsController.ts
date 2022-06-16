@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import { ListOngCollaboratorsUseCase } from '@/useCases/ListOngCollaboratorsUseCase';
+import { CreateOngCollaboratorUseCase } from '@/useCases/CreateOngCollaboratorUseCase';
 
 export class OngCollaboratorsController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -13,4 +14,22 @@ export class OngCollaboratorsController {
 
     return response.json(users);
   }
+
+  public async create(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
+
+    const { email, role } = request.body;
+
+    const createOngCollaboratorUseCase = container.resolve(CreateOngCollaboratorUseCase);
+
+    const collaborator = await createOngCollaboratorUseCase.execute({ 
+      loggedUserId: user_id, 
+      collaboratorEmail: email,
+      collaboratorRole: role,
+    });
+
+    return response.json(collaborator);
+  }
+
+  // public async destroy(request: Request, response: Response): Promise<Response> {}
 }

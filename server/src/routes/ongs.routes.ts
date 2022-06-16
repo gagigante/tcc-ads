@@ -28,6 +28,18 @@ ongsRouter.get(
   ongCollaboratorsController.index,
 );
 
+ongsRouter.post(
+  '/collaborators',
+  ensureAuthenticated,
+  celebrate({
+    [Segments.BODY]: {
+      email: Joi.string().email().required(),
+      role: Joi.string().valid('doador', 'colaborador', 'gestor').required(),
+    },
+  }),
+  ongCollaboratorsController.create,
+);
+
 ongsRouter.get(
   '/',
   celebrate({
