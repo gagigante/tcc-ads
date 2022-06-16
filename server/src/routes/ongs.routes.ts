@@ -40,6 +40,17 @@ ongsRouter.post(
   ongCollaboratorsController.create,
 );
 
+ongsRouter.delete(
+  '/collaborators/:id',
+  ensureAuthenticated,
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+  }),
+  ongCollaboratorsController.destroy,
+);
+
 ongsRouter.get(
   '/',
   celebrate({

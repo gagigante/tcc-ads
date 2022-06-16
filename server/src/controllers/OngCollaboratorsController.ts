@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 
 import { ListOngCollaboratorsUseCase } from '@/useCases/ListOngCollaboratorsUseCase';
 import { CreateOngCollaboratorUseCase } from '@/useCases/CreateOngCollaboratorUseCase';
+import { RemoveOngCollaboratorUseCase } from '@/useCases/RemoveOngCollaboratorUseCase';
 
 export class OngCollaboratorsController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -31,5 +32,15 @@ export class OngCollaboratorsController {
     return response.json(collaborator);
   }
 
-  // public async destroy(request: Request, response: Response): Promise<Response> {}
+  public async destroy(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
+
+    const { id: collaboratorId } = request.params;
+
+    const removeOngCollaboratorUseCase = container.resolve(RemoveOngCollaboratorUseCase);
+
+    await removeOngCollaboratorUseCase.execute({ loggedUserId: user_id, collaboratorId: Number(collaboratorId) });
+
+    return response.status(201).end();
+  }
 }
