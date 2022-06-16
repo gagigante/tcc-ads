@@ -9,6 +9,7 @@ import { ensureAuthenticated } from '@/middlewares/ensureAuthenticated';
 import { OngThumbnailController } from '@/controllers/OngThumbnailController';
 import { OngCoverController } from '@/controllers/OngCoverController';
 import { uploadConfig } from '@/config/upload';
+import { OngCollaboratorsController } from '@/controllers/OngCollaboratorsController';
 
 // http://localhost:3333/ongs
 const ongsRouter = Router();
@@ -19,6 +20,13 @@ const ongProjectsController = new OngProjectsController();
 const ongProjectsCountController = new OngProjectsCountController();
 const ongThumbnailController = new OngThumbnailController();
 const ongCoverController = new OngCoverController();
+const ongCollaboratorsController = new OngCollaboratorsController();
+
+ongsRouter.get(
+  '/collaborators',
+  ensureAuthenticated,
+  ongCollaboratorsController.index,
+);
 
 ongsRouter.get(
   '/',
@@ -28,6 +36,16 @@ ongsRouter.get(
     },
   }),
   ongsController.index,
+);
+
+ongsRouter.get(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+  }),
+  ongsController.show,
 );
 
 ongsRouter.post(
@@ -75,16 +93,6 @@ ongsRouter.patch(
   ensureAuthenticated,
   upload.single('file'),
   ongCoverController.update,
-);
-
-ongsRouter.get(
-  '/:id',
-  celebrate({
-    [Segments.PARAMS]: {
-      id: Joi.number().required(),
-    },
-  }),
-  ongsController.show,
 );
 
 ongsRouter.get(
