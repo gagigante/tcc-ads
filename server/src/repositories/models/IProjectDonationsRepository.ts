@@ -3,6 +3,7 @@ import { ProjectDonation } from '@/entities/ProjectDonation';
 
 export interface IProjectDonationsRepository {
   getUserDonations(userId: number): Promise<ProjectDonation[]>;
+  getOngDonations(ongId: number): Promise<ProjectDonation[]>;
   getProjectDonations(projectId: number): Promise<ProjectDonation[]>;
   getProjectDonation(id: number): Promise<ProjectDonation | null>;
   countProjectDonations(projectId: number): Promise<number>;

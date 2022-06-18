@@ -10,6 +10,7 @@ import { OngThumbnailController } from '@/controllers/OngThumbnailController';
 import { OngCoverController } from '@/controllers/OngCoverController';
 import { uploadConfig } from '@/config/upload';
 import { OngCollaboratorsController } from '@/controllers/OngCollaboratorsController';
+import { OngDonationsController } from '@/controllers/OngDonationsController';
 
 // http://localhost:3333/ongs
 const ongsRouter = Router();
@@ -21,6 +22,7 @@ const ongProjectsCountController = new OngProjectsCountController();
 const ongThumbnailController = new OngThumbnailController();
 const ongCoverController = new OngCoverController();
 const ongCollaboratorsController = new OngCollaboratorsController();
+const ongDonationsController = new OngDonationsController();
 
 ongsRouter.get(
   '/collaborators',
@@ -49,6 +51,12 @@ ongsRouter.delete(
     },
   }),
   ongCollaboratorsController.destroy,
+);
+
+ongsRouter.get(
+  '/donations',
+  ensureAuthenticated,
+  ongDonationsController.index
 );
 
 ongsRouter.get(

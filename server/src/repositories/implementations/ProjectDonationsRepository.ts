@@ -13,10 +13,22 @@ export class ProjectDonationsRepository implements IProjectDonationsRepository {
     this.repository = appDataSource.getRepository(ProjectDonation);
   }
 
-  public async getUserDonations(userId: number): Promise<ProjectDonation[]> {
+  public async getUserDonations(userId: number): Promise<ProjectDonation[]> {   
     const donations = await this.repository.find({
       where: { 
         user_id: userId,
+      },
+    });
+
+    return donations;
+  }
+
+  public async getOngDonations(ongId: number): Promise<ProjectDonation[]> {
+    const donations = await this.repository.find({
+      where: {
+        project: {
+          ong_id: ongId,
+        },
       },
     });
 
