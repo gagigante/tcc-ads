@@ -21,8 +21,15 @@ donationsRouter.post(
   donationsController.create,
 );
 
-
-
-
+donationsRouter.patch(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+  }),
+  ensureAuthenticated,
+  donationsController.update,
+);
 
 export { donationsRouter };
