@@ -27,6 +27,31 @@ export class ProjectsController {
     return response.json(project);
   }
 
+  public async create(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
+
+    const {
+      name,
+      description,
+      donation_description,
+      donation_value_goal,
+      donation_goal,   
+    } = request.body;
+
+    const createProjectUseCase = container.resolve(CreateProjectUseCase);
+
+    const project = await createProjectUseCase.execute({
+      user_id,
+      name,
+      description,
+      donation_description,
+      donation_value_goal,
+      donation_goal,
+    });
+
+    return response.json(project);
+  }
+
   public async update(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 

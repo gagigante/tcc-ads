@@ -23,6 +23,21 @@ projectsRouter.get(
   projectsController.index,
 );
 
+projectsRouter.post(
+  '/',
+  ensureAuthenticated,
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      description: Joi.string().required(),
+      donation_description: Joi.string().required(),
+      donation_value_goal: Joi.number().integer(),
+      donation_goal: Joi.number().integer(),
+    },
+  }),
+  projectsController.create,
+);
+
 projectsRouter.get(
   '/:id',
   celebrate({
