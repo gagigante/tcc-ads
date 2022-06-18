@@ -125,11 +125,13 @@ const MyOng: NextPage = () => {
                     onClick={() => push('/my-ong/donations')}
                   />
 
-                  <Button 
-                    text="Gerir colaboradores" 
-                    variant="info"
-                    onClick={() => push('/my-ong/collaborators')}
-                  />
+                  {user.role === 'gestor' && (
+                    <Button 
+                      text="Gerir colaboradores" 
+                      variant="info"
+                      onClick={() => push('/my-ong/collaborators')}
+                    />
+                  )}
                 </div>
               </div>
 
