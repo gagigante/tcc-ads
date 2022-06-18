@@ -5,13 +5,20 @@ import { ProjectsController } from '@/controllers/ProjectsController';
 import { DonationsCountController } from '@/controllers/DonationsCountController';
 import { DonationsSumController } from '@/controllers/DonationsSumController';
 import { ensureAuthenticated } from '@/middlewares/ensureAuthenticated';
+import { uploadConfig } from '@/config/upload';
+import multer from 'multer';
+import { ProjectThumbnailController } from '@/controllers/ProjectThumbnailController';
+import { ProjectCoverController } from '@/controllers/ProjectCoverController';
 
 // http://localhost:3333/projects
 const projectsRouter = Router();
+const upload = multer(uploadConfig.multer);
 
 const projectsController = new ProjectsController();
 const donationsCountController = new DonationsCountController();
 const donationsSumController = new DonationsSumController();
+const projectThumbnailController = new ProjectThumbnailController();
+const projectCoverController = new ProjectCoverController();
 
 projectsRouter.get(
   '/',
@@ -64,6 +71,20 @@ projectsRouter.put(
     },
   }),
   projectsController.update,
+);
+
+projectsRouter.patch(
+  '/:id/thumb',
+  ensureAuthenticated,
+  upload.single('file'),
+  projectThumbnailController.update,
+);
+
+projectsRouter.patch(
+  '/:id/banner',
+  ensureAuthenticated,
+  upload.single('file'),
+  projectCoverController.update,
 );
 
 projectsRouter.get(

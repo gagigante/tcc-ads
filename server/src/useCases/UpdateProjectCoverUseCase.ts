@@ -1,19 +1,20 @@
 import { IStorageProvider } from '@/container/providers/StorageProvider/models/IStorageProvider';
-import { Ong } from '@/entities/Ong';
+import { Project } from '@/entities/Project';
 import { AppError } from '@/errors/AppError';
 import { IOngsRepository } from '@/repositories/models/IOngsRepository';
+import { IProjectsRepository } from '@/repositories/models/IProjectsRepository';
 import { IUsersRepository } from '@/repositories/models/IUsersRepository';
 import { instanceToInstance } from 'class-transformer';
 import { injectable, inject } from 'tsyringe';
 
 interface IRequestDTO {
   user_id: number;
-  ong_id: number;
+  project_id: number;
   filename: string;
 }
 
 @injectable()
-export class UpdateOngCoverUseCase {
+export class UpdateProjectCoverUseCase {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
@@ -21,41 +22,50 @@ export class UpdateOngCoverUseCase {
     @inject('OngsRepository')
     private ongsRepository: IOngsRepository,
 
+    @inject('ProjectsRepository')
+    private projectsRepository: IProjectsRepository,
+
     @inject('StorageProvider')
     private storageProvider: IStorageProvider,
   ) {}
 
   public async execute({
     user_id,
-    ong_id,
+    project_id,
     filename,
-  }: IRequestDTO): Promise<Ong> {
+  }: IRequestDTO): Promise<Project> {
     const user = await this.usersRepository.getUserById(user_id);
 
     if (!user) {
-      throw new AppError('Only authenticated users can change avatar.', 401);
+      throw new AppError('Unauthorized', 401);
     }
 
-    const ong = await this.ongsRepository.getOngById(ong_id);
+    if (!user.ong_id || user.role === 'doador') {
+      throw new AppError('Unauthorized', 401);
+    }
+
+    const ong = await this.ongsRepository.getOngById(user.ong_id);
 
     if (!ong) {
       throw new AppError('Ong was not found', 404);
     }
 
-    if (ong.id !== user.ong_id) {
-      throw new AppError('Unauthorized', 401);
+    const project = await this.projectsRepository.getProjectById(project_id);
+
+    if (!project) {
+      throw new AppError('Project was not found', 404);
     }
 
-    if (ong.banner_url) {
-      await this.storageProvider.deleteFile(ong.banner_url);
+    if (project.banner_url) {
+      await this.storageProvider.deleteFile(project.banner_url);
     }
 
     const bannerFilename = await this.storageProvider.saveFile(filename);
 
-    ong.banner_url = bannerFilename;
+    project.banner_url = bannerFilename;
 
-    await this.ongsRepository.save(ong);
+    await this.projectsRepository.save(project);
 
-    return instanceToInstance(ong);
+    return instanceToInstance(project);
   }
 }
