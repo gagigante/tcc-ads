@@ -82,15 +82,15 @@ ongsRouter.get(
 ongsRouter.post(
   '/',
   ensureAuthenticated,
-  celebrate({
-    [Segments.BODY]: {
-      name: Joi.string().required(),
-      description: Joi.string().required(),
-      cnpj: Joi.string().required(), 
-      website_url: Joi.string(),
-      whatsapp_url: Joi.string(),
-    },
-  }),
+  // celebrate({
+  //   [Segments.BODY]: {
+  //     name: Joi.string().required(),
+  //     description: Joi.string().required(),
+  //     cnpj: Joi.string().required(), 
+  //     website_url: Joi.string(),
+  //     whatsapp_url: Joi.string(),
+  //   },
+  // }),
   ongsController.create,
 );
 

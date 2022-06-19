@@ -37,6 +37,9 @@ export class OngsController {
       cnpj, 
       website_url,
       whatsapp_url,
+      address,
+      ong_contacts,
+      social_links,
     } = request.body;
 
     const createOngUseCase = container.resolve(CreateOngUseCase);
@@ -48,6 +51,9 @@ export class OngsController {
       cnpj, 
       website_url,
       whatsapp_url,
+      address,
+      ong_contacts,
+      social_links,
     });
 
     return response.json({ ong, user });
