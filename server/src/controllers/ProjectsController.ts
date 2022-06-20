@@ -3,8 +3,8 @@ import { container } from 'tsyringe';
 
 import { GetProjectsUseCase } from '@/useCases/GetProjectsUseCase';
 import { GetProjectByIdUseCase } from '@/useCases/GetProjectByIdUseCase';
-import { RemoveProjectUseCase } from '@/useCases/RemoveProjectUseCase';
 import { UpdateProjectUseCase } from '@/useCases/UpdateProjectUseCase';
+import { CreateProjectUseCase } from '@/useCases/CreateProjectUseCase';
 
 export class ProjectsController {
   public async index(request: Request, response: Response): Promise<Response> {

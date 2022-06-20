@@ -58,5 +58,13 @@
         }
       }
     }
+
+    tbody tr > td {
+      padding-bottom: 1em;
+
+      button + button {
+        margin-left: 0.5rem;
+      }
+    }
   }
 }

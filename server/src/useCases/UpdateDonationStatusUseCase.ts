@@ -43,6 +43,8 @@ export class UpdateDonationStatusUseCase {
 
     donation.status = 'realizado';
 
+    await this.projectDonationsRepository.save(donation);
+
     return instanceToInstance(donation);
   }
 }

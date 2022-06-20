@@ -31,7 +31,7 @@ const updateProfileFormSchema = yup.object({
   password_confirmation: yup.string(),
 })
 
-type FormattedDonation = Omit<Donation, 'value' | 'created_at'> & { value: string | null, created_at: string }
+export type FormattedDonation = Omit<Donation, 'value' | 'created_at'> & { value: string | null, created_at: string }
 
 type UpdateProfileFormData = {
 	name: string;
