@@ -1,0 +1,140 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #F5F8FA;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+
+  .empty {
+    max-width: 720px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+    h2 {
+      color: #123952;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      color: #123952;
+      font-size: 1rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+  }
+
+  .projectContainer {
+    width: 100%;
+
+    .cover {
+      position: relative;
+      width: 100%;
+      height: 254px;
+      background-color: #F25D27;
+      background-size: cover;
+      background-position: top center;
+      background-repeat: no-repeat;
+
+      img {
+        position: absolute;
+        width: 128px;
+        height: 128px;
+        border-radius: 50%;
+        left: 100px;
+        bottom: -56px;
+
+        @media (max-width: 640px) {
+          left: calc(50% - 64px);
+        }
+      }
+
+      > div {
+        position: absolute;
+        top: 32px;
+        right: 32px;
+
+        input[type="file"] {
+          display: none;
+        }
+  
+        .fileInput {
+          padding: 1rem 2rem;
+          color: #FFFFFF;
+          background-color: #115D8C;
+          font-weight: 700;
+          cursor: pointer;
+          border-radius: 0.5rem;
+          border: 0;
+          
+          & + .fileInput {
+            margin-left: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+.projectContent {
+  margin-top: 3rem;
+  flex: 1;
+  width: 100%;  
+  padding: 3rem 1.5rem;
+  overflow-y: auto;
+
+  .subHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1440px;
+    margin: 0 auto;
+
+    @media (max-width: 620px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    h1 {
+      color: #123952;
+      font-size: 2rem;
+    }
+
+    button {
+      color: #A0ACB2;
+      padding: 0.8rem 0.5rem;
+      background-color: transparent;
+      border: 0;
+      border-bottom: 1px solid #DCE2E5;
+
+      &.active {
+        color: #123952;
+        font-weight: bold;
+        border-bottom: 2px solid #F25D27;
+      }
+    }
+  }
+}
+
+.projectForm {
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+
+  div {
+    margin-top: 1rem;
+  }
+
+  hr {
+    margin: 1.5rem;
+  }
+
+  button {
+    margin-top: 1rem;
+  }
+}

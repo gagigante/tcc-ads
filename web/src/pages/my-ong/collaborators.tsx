@@ -7,12 +7,14 @@ import { Button } from '../../components/Button';
 import { Header } from '../../components/Header';
 import { IconButton } from '../../components/IconButton';
 import { Input } from '../../components/Input';
+import { useAuth } from '../../hooks/useAuth';
 import { User } from '../../models/User';
 import { api } from '../../services/api';
 import styles from '../../styles/pages/collaborators.module.scss';
 
 const Collaborators: NextPage = () => {
-  const { back } = useRouter();
+  const { back, push } = useRouter();
+  const { user } = useAuth();
 
   const [collaborators, setCollaborators] = useState<User[]>([]);
   const [email, setEmail] = useState('');
@@ -21,6 +23,10 @@ const Collaborators: NextPage = () => {
   useEffect(() => {
     fetchCollaborators();
   }, []);
+
+  useEffect(() => {
+    if (!user) push('/');
+  }, [user, push]);
 
   async function fetchCollaborators() {
     const { data } = await api.get<User[]>('/ongs/collaborators');
