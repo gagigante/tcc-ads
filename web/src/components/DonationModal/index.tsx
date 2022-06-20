@@ -45,7 +45,7 @@ export const DonationModal = ({
 }: DonationModalProps) => {
   const { register, handleSubmit, reset } = useForm<DonationFormData>();
 
-  const [donationType, setDonationType] = useState<'cash' | 'other'>('cash');
+  const [donationType, setDonationType] = useState<'dinheiro' | 'outro'>('dinheiro');
   const [donationValue, setDonationValue] = useState('');
 
   function handleUpdateDonationValue(value?: string) {
@@ -116,18 +116,18 @@ export const DonationModal = ({
           
           <div className={styles.donationType}>
             <button 
-              className={`${donationType === 'cash' && styles.active}`} 
-              onClick={() => setDonationType('cash')}
+              className={`${donationType === 'dinheiro' && styles.active}`} 
+              onClick={() => setDonationType('dinheiro')}
             >Dinheiro</button>
 
             <button 
-              className={`${donationType === 'other' && styles.active}`} 
-              onClick={() => setDonationType('other')}
+              className={`${donationType === 'outro' && styles.active}`} 
+              onClick={() => setDonationType('outro')}
             >Outro</button>
           </div>
           
           <form onSubmit={handleSubmit(handleCreateDonation)}>
-            {donationType === 'cash' && (
+            {donationType === 'dinheiro' && (
               <InputCurrency
                 name="value"
                 label="Valor da doação"
