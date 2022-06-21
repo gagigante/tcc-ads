@@ -13,6 +13,7 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { api } from '../../services/api';
 import { Ong } from '../../models/Ong';
+import { Textarea } from '../../components/Textarea';
 
 type CreateOngFormData = {
   name: string;
@@ -62,7 +63,7 @@ const CreateOng: NextPage = () => {
   const { register, handleSubmit, formState, control } = useForm<CreateOngFormData>({
     resolver: yupResolver(createOngFormSchema),
   });
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'ong_contacts' as never,
   });
@@ -80,6 +81,7 @@ const CreateOng: NextPage = () => {
   }, [user, back]);
 
   const handleCreateOng: SubmitHandler<CreateOngFormData> = async ({
+    address,
     ong_contacts,
     facebook,
     instagram,
@@ -88,6 +90,10 @@ const CreateOng: NextPage = () => {
   }) => {
     const ongContacts = ong_contacts.map(item => item.value).filter(item => !!item);
     const ongSocialLinks = [];
+    const ongAddress = {
+      ...address,
+      number: Number(address.number),
+    }
 
     if (facebook) ongSocialLinks.push({ social_link_type: 'facebook', social_link_url: facebook });
     if (instagram) ongSocialLinks.push({ social_link_type: 'instagram', social_link_url: instagram });
@@ -98,6 +104,7 @@ const CreateOng: NextPage = () => {
         ...formData,
         ong_contacts: ongContacts,
         social_links: ongSocialLinks,
+        address: ongAddress,
       });
 
       alert('ONG criada com sucesso. Em breve revisaremos seu cadastro!');
@@ -143,7 +150,7 @@ const CreateOng: NextPage = () => {
           </div>
           
           <div>
-            <Input 
+            <Textarea 
               label="Descrição da ONG" 
               placeholder="Digite a descrição da Ong" 
               required
@@ -254,7 +261,7 @@ const CreateOng: NextPage = () => {
                 label={`${index + 1}° Contato`}
                 placeholder="Digite o contato"
                 hasError={!!errors.ong_contacts}
-                {...register(`ong_contacts.${index}.value` as any)} 
+                {...register(`ong_contacts.${index}.value` as const)} 
               />
 
               <IconButton
