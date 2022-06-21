@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  max-width: 280px;
   border-radius: 0.5rem;
   border: 1px solid #DCE2E5;
   overflow: hidden;

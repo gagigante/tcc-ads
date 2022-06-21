@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { FaTrash } from 'react-icons/fa';
 import { FiArrowLeft, FiHeart } from 'react-icons/fi';
 import { Button } from '../../components/Button';
 import { CardItem } from '../../components/CardItem';
@@ -66,6 +67,17 @@ const MyOng: NextPage = () => {
     }
   }
 
+  async function handleRemoveProject(id: number) {
+    try {
+      await api.delete(`/projects/${id}`);
+      
+      setProjects(prevState => prevState.filter(item => item.id !== id));
+      alert('Projeto removido com sucesso');
+    } catch {
+      alert('Algo deu errado. Tente novamente!');
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Header />
@@ -84,7 +96,11 @@ const MyOng: NextPage = () => {
               onClick={() => push('my-ong/create')}
             />
 
-            <h3>Se você já preencheu o formulário de cadastro de ONG aguarde que o cadastro seja aprovado para conseguir visualiza-la</h3>
+            <h3 style={{ marginBottom: '1rem' }}>
+              Se você já preencheu o formulário de cadastro de ONG aguarde que o cadastro seja aprovado para conseguir visualiza-la
+            </h3>
+
+            <Button variant="info" text="Voltar" onClick={back}/>
           </div>
         )}
 
@@ -125,7 +141,7 @@ const MyOng: NextPage = () => {
                     onClick={() => push('/my-ong/donations')}
                   />
 
-                  {user.role === 'gestor' && (
+                  {user && user.role === 'gestor' && (
                     <Button 
                       text="Gerir colaboradores" 
                       variant="info"
@@ -183,7 +199,11 @@ const MyOng: NextPage = () => {
               </div>
 
               <div className={styles.projects}>
-                <h1>Projetos</h1>
+                <div>
+                  <h1 style={{ marginBottom: '0.5rem' }}>Projetos</h1>
+
+                  <Button text="Criar projeto" variant="success" onClick={() => push('my-ong/project/create') }/>
+                </div>
                     
                 <div className={styles.grid}>
                   {projects.map(item => (
@@ -192,7 +212,16 @@ const MyOng: NextPage = () => {
                       title={item.name}
                       imageUrl={item.thumb_url}
                       redirectPath={`/my-ong/project/${item.id}`}
-                    />
+                    >
+                      <IconButton 
+                        variant="danger" 
+                        icon={<FaTrash color="#ffffff" />}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRemoveProject(item.id)
+                        }}
+                      />
+                    </CardItem>
                   ))}
                 </div>
               </div> 

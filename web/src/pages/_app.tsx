@@ -4,7 +4,7 @@ import { AppProvider } from '../contexts'
 
 import '../styles/globals.scss'
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: any) {
   return (
     <AppProvider>
       <Component {...pageProps} />
