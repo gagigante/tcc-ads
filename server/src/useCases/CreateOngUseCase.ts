@@ -6,10 +6,6 @@ import { AppError } from '@/errors/AppError';
 import { instanceToInstance } from 'class-transformer';
 import { IOngsRepository } from '@/repositories/models/IOngsRepository';
 import { Ong } from '@/entities/Ong';
-import { appDataSource } from '@/database/dataSource';
-import { OngContact } from '@/entities/OngContact';
-import { OngAddress } from '@/entities/OngAddress';
-import { OngSocialLink } from '@/entities/OngSocialLink';
 
 interface IRequestDTO {
   user_id: number;
@@ -72,43 +68,19 @@ export class CreateOngUseCase {
       cnpj,
       website_url,
       whatsapp_url,
+      ong_address: {
+        zip_code: address.zip_code,
+        state: address.state,
+        city: address.city,
+        district: address.district,
+        street: address.street,
+        number: address.number,
+      },
+      ong_contacts: ong_contacts.map(item => ({ contact: item })),
+      ong_social_links: social_links,
     });
 
-    const newOngAddress = new OngAddress();
-    newOngAddress.ong_id =  newOng.id;
-    newOngAddress.zip_code =  address.zip_code;
-    newOngAddress.state =  address.state;
-    newOngAddress.city =  address.city;
-    newOngAddress.district =  address.district;
-    newOngAddress.street =  address.street;
-    newOngAddress.number =  address.number;
-
-    newOng.ong_address = newOngAddress;
-
-    const newOngContacts = ong_contacts.map(item => {
-      const contact = new OngContact();
-
-      contact.ong_id =  newOng.id;
-      contact.contact = item
-
-      return contact;
-    });
-
-    newOng.ong_contacts = newOngContacts;
-
-    const newOngSocialLinks = social_links.map(item => {
-      const socialLink = new OngSocialLink();
-
-      socialLink.ong_id =  newOng.id;
-      socialLink.social_link_type = item.social_link_type;
-      socialLink.social_link_url = item.social_link_url;
-
-      return socialLink;
-    });
-
-    newOng.ong_social_links = newOngSocialLinks;
-    
-    await this.ongsRepository.save(newOng);
+    const response = await this.ongsRepository.save(newOng);
 
     const updatedUser = await this.usersRepository.save({
       ...user,
@@ -117,7 +89,7 @@ export class CreateOngUseCase {
     });
 
     return { 
-      ong: instanceToInstance(newOng), 
+      ong: instanceToInstance(response), 
       user: instanceToInstance(updatedUser),
     };
   }

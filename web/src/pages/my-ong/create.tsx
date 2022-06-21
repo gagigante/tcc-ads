@@ -78,7 +78,7 @@ const CreateOng: NextPage = () => {
       alert('Você já está associado à uma ONG');
       back();
     }
-  }, [user, back]);
+  }, []);
 
   const handleCreateOng: SubmitHandler<CreateOngFormData> = async ({
     address,
@@ -100,7 +100,7 @@ const CreateOng: NextPage = () => {
     if (twitter) ongSocialLinks.push({ social_link_type: 'twitter', social_link_url: twitter });
 
     try {
-      const { data: ong } = await api.post<Ong>('ongs', {
+      const { data: { ong } } = await api.post<{ ong: Ong }>('ongs', {
         ...formData,
         ong_contacts: ongContacts,
         social_links: ongSocialLinks,

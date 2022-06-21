@@ -1,11 +1,9 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-
 import { GetActiveOngsUseCase } from '@/useCases/GetActiveOngsUseCase';
 import { GetActiveOngByIdUseCase } from '@/useCases/GetActiveOngByIdUseCase';
 import { CreateOngUseCase } from '@/useCases/CreateOngUseCase';
-import { UpdateOngProfileUseCase } from '@/useCases/UpdateOngProfileUseCase';
-import { instanceToInstance } from 'class-transformer';
+import { UpdateOngUseCase } from '@/useCases/UpdateOngUseCase';
 
 export class OngsController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -62,28 +60,31 @@ export class OngsController {
   public async update(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 
-    const { id: ong_id } = request.params;
-
-    const {
+    const { 
       name,
       description,
       cnpj, 
       website_url,
       whatsapp_url,
+      address,
+      ong_contacts,
+      social_links,
     } = request.body;
 
-    const updateOngProfileUseCase = container.resolve(UpdateOngProfileUseCase);
+    const updateOngUseCase = container.resolve(UpdateOngUseCase);
 
-    const ong = await updateOngProfileUseCase.execute({
+    const ong = await updateOngUseCase.execute({
       user_id,
-      ong_id: Number(ong_id),
       name,
       description,
       cnpj, 
       website_url,
       whatsapp_url,
+      address,
+      ong_contacts,
+      social_links,
     });
 
-    return response.json(instanceToInstance(ong));
+    return response.json(ong);
   }
 }

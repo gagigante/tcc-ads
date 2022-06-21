@@ -54,7 +54,7 @@ export class Ong {
   @OneToOne(
     () => OngAddress, 
     (ongAddress) => ongAddress.ong,
-    { cascade: true, eager: true, nullable: true }
+    { cascade: true, eager: true }
   )
   ong_address: OngAddress;
 
