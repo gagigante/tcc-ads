@@ -18,7 +18,7 @@ export class ProjectDonation {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   project_id: number;
 
   @Column({ nullable: true })
@@ -49,7 +49,7 @@ export class ProjectDonation {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Project, (project) => project.donations, { eager: true })
+  @ManyToOne(() => Project, (project) => project.donations, { eager: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'project_id' })
   project: Project;
 

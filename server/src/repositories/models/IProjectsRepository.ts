@@ -11,4 +11,5 @@ export interface IProjectsRepository {
   countOngProjects(ongId: number): Promise<number>;  
   create(data: ICreateProjectDto): Project;
   save(project: Project): Promise<Project>;
+  delete(id: number): Promise<void>;
 }

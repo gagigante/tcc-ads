@@ -73,6 +73,17 @@ projectsRouter.put(
   projectsController.update,
 );
 
+projectsRouter.delete(
+  '/:id',
+  ensureAuthenticated,
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+  }),
+  projectsController.destroy,
+);
+
 projectsRouter.patch(
   '/:id/thumb',
   ensureAuthenticated,

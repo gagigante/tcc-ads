@@ -46,7 +46,11 @@ export class ProjectsRepository implements IProjectsRepository {
     return project
   }
 
-  public save(project: Project): Promise<Project> {
+  public async save(project: Project): Promise<Project> {
     return this.repository.save(project);
+  }
+
+  public async delete(id: number): Promise<void> {
+    await this.repository.delete({ id });
   }
 }

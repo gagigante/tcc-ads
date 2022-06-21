@@ -5,6 +5,7 @@ import { GetProjectsUseCase } from '@/useCases/GetProjectsUseCase';
 import { GetProjectByIdUseCase } from '@/useCases/GetProjectByIdUseCase';
 import { UpdateProjectUseCase } from '@/useCases/UpdateProjectUseCase';
 import { CreateProjectUseCase } from '@/useCases/CreateProjectUseCase';
+import { RemoveProjectUseCase } from '@/useCases/RemoveProjectUseCase';
 
 export class ProjectsController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -78,5 +79,20 @@ export class ProjectsController {
     });
 
     return response.json(project);
+  }
+
+  public async destroy(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
+
+    const { id } = request.params;
+
+    const removeProjectUseCase = container.resolve(RemoveProjectUseCase);
+
+    await removeProjectUseCase.execute({ 
+      userId: Number(user_id), 
+      projectId: Number(id),
+    });
+
+    return response.status(201).end();
   }
 }
