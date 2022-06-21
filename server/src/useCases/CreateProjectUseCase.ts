@@ -12,8 +12,8 @@ interface IRequestDTO {
   name: string;
   description: string;
   donation_description: string;
-  donation_value_goal?: number;
-  donation_goal?: number;
+  donation_value_goal: number | null;
+  donation_goal: number | null;
 }
 
 @injectable()

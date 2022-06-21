@@ -44,8 +44,8 @@ const CreateDonation: NextPage = () => {
   const handleUpdateProfile: SubmitHandler<CreateProjectFormData> = async ({ donation_goal, ...formData }) => {
     const data = {
       ...formData,
-      ...(!!donation_goal && { donation_goal: donation_goal }),
-      ...(!!donationValue && { donation_value_goal: donationValue }),
+      donation_goal: !!donation_goal ? donation_goal : null,
+      donation_value_goal: !!donationValue ? formatCurrencyValue(donationValue) : null,
     };
 
     try {
@@ -64,6 +64,12 @@ const CreateDonation: NextPage = () => {
     }
 
     setDonationValue(value);
+  }
+
+  function formatCurrencyValue(value: string) {
+    const formattedValue = String(Number(value.replace(',', '.')) * 100);
+
+    return formattedValue;
   }
 
   const { errors } = formState;

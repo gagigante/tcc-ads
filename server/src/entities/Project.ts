@@ -38,10 +38,10 @@ export class Project {
   banner_url: string;
 
   @Column({ nullable: true })
-  donation_value_goal?: number;
+  donation_value_goal: number;
 
   @Column({ nullable: true })
-  donation_goal?: number;
+  donation_goal: number;
 
   @CreateDateColumn()
   created_at: Date;

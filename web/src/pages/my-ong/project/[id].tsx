@@ -63,8 +63,8 @@ const Project: NextPage<ProjectProps> = ({ project }) => {
   const handleUpdateProject: SubmitHandler<UpdateProjectFormData> = async ({ donation_goal, ...formData }) => {
     const data = {
       ...formData,
-      ...(!!donation_goal && { donation_goal }),
-      ...(!!donationValue && { donation_value_goal: formatCurrencyValue(String(donationValue)) }),
+      donation_goal: !!donation_goal ? donation_goal : null,
+      donation_value_goal: !!donationValue ? formatCurrencyValue(donationValue) : null,
     }
 
     console.log({ data });
