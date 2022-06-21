@@ -1,0 +1,67 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #F5F8FA;
+}
+
+.content {
+  flex: 1;
+  width: 100%;  
+  padding: 3rem 1.5rem;
+  overflow-y: auto;
+
+  .subHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1440px;
+    margin: 0 auto;
+
+    @media (max-width: 620px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    h1 {
+      color: #123952;
+      font-size: 2rem;
+    }
+
+    button {
+      color: #A0ACB2;
+      padding: 0.8rem 0.5rem;
+      background-color: transparent;
+      border: 0;
+      border-bottom: 1px solid #DCE2E5;
+
+      &.active {
+        color: #123952;
+        font-weight: bold;
+        border-bottom: 2px solid #F25D27;
+      }
+    }
+  }
+
+  .ongForm {
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+  
+    > div {
+      margin-top: 1rem;
+
+      > button {
+        margin-left: 0.5rem;
+      }
+    }
+  
+    hr {
+      margin: 1.5rem;
+    }
+  
+    > button {
+      margin-top: 1rem;
+    }
+  }
+}

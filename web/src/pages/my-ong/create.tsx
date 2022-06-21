@@ -1,22 +1,21 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { FiArrowLeft, FiTrash } from 'react-icons/fi';
-import { Button } from '../../components/Button';
 import { Header } from '../../components/Header';
 import { IconButton } from '../../components/IconButton';
-import { Input } from '../../components/Input';
 import { useAuth } from '../../hooks/useAuth';
-import { Ong } from '../../models/Ong';
-import { api } from '../../services/api';
 import styles from '../../styles/pages/create-ong.module.scss';
-import * as yup from 'yup'
-import { Textarea } from '../../components/Textarea';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Button } from '../../components/Button';
+import { Input } from '../../components/Input';
+import { api } from '../../services/api';
+import { Ong } from '../../models/Ong';
 
-type UpdateProfileFormData = {
-	name: string;
+type CreateOngFormData = {
+  name: string;
   description: string;
   cnpj: string;
   website_url?: string;
@@ -35,7 +34,7 @@ type UpdateProfileFormData = {
   instagram?: string;
 }
 
-const updateProfileFormSchema = yup.object({
+const createOngFormSchema = yup.object({
   name: yup.string().required(),
   description: yup.string().required(),
   cnpj: yup.string().required(),
@@ -57,86 +56,55 @@ const updateProfileFormSchema = yup.object({
   instagram: yup.string(),
 });
 
-const Edit: NextPage = () => {
-  const { push, back } = useRouter();
-  const { user } = useAuth();
-  const { register, handleSubmit, formState, control } = useForm<UpdateProfileFormData>({
-    resolver: yupResolver(updateProfileFormSchema),    
+const CreateOng: NextPage = () => {
+  const { back, push } = useRouter();
+  const { user, updateUser } = useAuth();
+  const { register, handleSubmit, formState, control } = useForm<CreateOngFormData>({
+    resolver: yupResolver(createOngFormSchema),
   });
-  const { fields, append, remove } = useFieldArray({
-    shouldUnregister: true,
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
     control,
     name: 'ong_contacts' as never,
   });
+
 
   useEffect(() => {
     if (!user) push('/');
   }, [user, push]);
 
-  const [ongData, setOngData] = useState<Ong | null>(null);
-
   useEffect(() => {
-    fetchOng(user.ong_id);
-  }, []);
-
-  useEffect(() => {
-    if (ongData?.ong_contacts) {
-      ongData.ong_contacts.forEach((item, index) => {
-        append({ value: item.contact });
-      });
+    if (user.ong_id) {
+      alert('Você já está associado à uma ONG');
+      back();
     }
-  }, [ongData?.ong_contacts, append])
+  }, [user, back]);
 
-  async function fetchOng(ongId: number | null) {
-    if (!user.ong_id) {
-      return;
-    }
-
-    try {
-      const { data } = await api.get<Ong>(`ongs/${ongId}`);
-
-      console.log({ data });
-      setOngData(data);
-    } catch {
-      setOngData(null);
-    }
-  }
-
-  const handleUpdateProfile: SubmitHandler<UpdateProfileFormData> = async ({
-    address,
+  const handleCreateOng: SubmitHandler<CreateOngFormData> = async ({
     ong_contacts,
     facebook,
     instagram,
     twitter,
     ...formData
   }) => {
-    if (!ongData) {
-      return;
-    }
-
     const ongContacts = ong_contacts.map(item => item.value).filter(item => !!item);
     const ongSocialLinks = [];
-    const ongAddress = {
-      ...address,
-      number: Number(address.number),
-    }
 
     if (facebook) ongSocialLinks.push({ social_link_type: 'facebook', social_link_url: facebook });
     if (instagram) ongSocialLinks.push({ social_link_type: 'instagram', social_link_url: instagram });
     if (twitter) ongSocialLinks.push({ social_link_type: 'twitter', social_link_url: twitter });
 
     try {
-      await api.put<Ong>(`ongs/${ongData.id}`, {
+      const { data: ong } = await api.post<Ong>('ongs', {
         ...formData,
         ong_contacts: ongContacts,
         social_links: ongSocialLinks,
-        address: ongAddress,
       });
-    
-      alert('Perfil atualizado com sucesso!');
+
+      alert('ONG criada com sucesso. Em breve revisaremos seu cadastro!');
+      updateUser({...user, ong_id: ong.id });
       back();
     } catch {
-      alert('Houve um erro ao tentar atualizar o perfil. Tente novamente!');
+      alert('Algo deu errado. Tente novamente!');
     }
   }
 
@@ -145,75 +113,69 @@ const Edit: NextPage = () => {
   return (
     <div className={styles.container}>
       <Header />
-      
+
       <div className={styles.content}>
         <div className={styles.subHeader}>
           <h1 style={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton 
+            <IconButton
               variant="info" 
               icon={<FiArrowLeft color="#FFFFFF" />} 
               onClick={back} 
             />
 
             <span style={{ marginLeft: '0.5rem' }}>
-              Editar perfil
+              Criar ONG
             </span>
-          </h1>
+          </h1>          
         </div>
 
-        {ongData && (
-          <form className={styles.ongForm}  onSubmit={handleSubmit(handleUpdateProfile)}>
-            <p>Dados da ONG</p>
+        <form className={styles.ongForm}  onSubmit={handleSubmit(handleCreateOng)}>
+          <p>Dados da ONG</p>
 
-            <div>
-              <Input
-                label="Nome da Ong" 
-                placeholder="Digite o nome da Ong" 
-                required
-                defaultValue={ongData.name}
-                hasError={!!errors.name}
-                {...register('name')}
-              />
-            </div>
-
-            <div>
-              <Textarea 
-                label="Descrição da ONG" 
-                placeholder="Digite a descrição da Ong" 
-                required
-                hasError={!!errors.description}
-                defaultValue={ongData.description}
-                {...register('description')}
-              />
-            </div>
-  
-            <div>
-              <Input 
-                label="CNPJ" 
-                placeholder="Digite o CNPJ da ONG" 
-                required
-                defaultValue={ongData.cnpj}
-                hasError={!!errors.cnpj}
-                {...register('cnpj')}
-              />
-            </div>
-  
-            <div>
-              <Input               
-                label="Link de Whatsapp"
-                placeholder="Digite o link do Whatsapp da Ong"
-                hasError={!!errors.whatsapp_url}
-                defaultValue={ongData.whatsapp_url ?? ''}
-                {...register('whatsapp_url')}
-              />
-            </div>            
+          <div>
+            <Input
+              label="Nome da Ong" 
+              placeholder="Digite o nome da Ong" 
+              required
+              hasError={!!errors.name}
+              {...register('name')}
+            />
+          </div>
+          
+          <div>
+            <Input 
+              label="Descrição da ONG" 
+              placeholder="Digite a descrição da Ong" 
+              required
+              hasError={!!errors.description}
+              {...register('description')}
+            />
+          </div>
+            
+          <div>
+            <Input 
+              label="CNPJ" 
+              placeholder="Digite o CNPJ da ONG" 
+              required
+              hasError={!!errors.cnpj}
+              {...register('cnpj')}
+            />
+          </div>
+            
+          <div>
+            <Input               
+              label="Link de Whatsapp"
+              placeholder="Digite o link do Whatsapp da Ong"
+              hasError={!!errors.whatsapp_url}
+              {...register('whatsapp_url')}
+            />
+          </div>            
 
           <div>
             <Input               
               label="Website"
               placeholder="Digite o link para o site da Ong"
               hasError={!!errors.website_url}
-              defaultValue={ongData.website_url ?? ''}
               {...register('website_url')}
             />
           </div> 
@@ -227,7 +189,6 @@ const Edit: NextPage = () => {
               placeholder="Digite a rua da ONG"
               hasError={!!errors.address?.street}
               required
-              defaultValue={ongData.ong_address?.street}
               {...register('address.street')}
             />
           </div>
@@ -238,7 +199,6 @@ const Edit: NextPage = () => {
               label="Número"
               placeholder="Digite o número da ONG"
               hasError={!!errors.address?.number}
-              defaultValue={ongData.ong_address?.number}
               required
               {...register('address.number')}
             />
@@ -249,7 +209,6 @@ const Edit: NextPage = () => {
               label="Bairro"
               placeholder="Digite o bairro da ONG"
               hasError={!!errors.address?.district}
-              defaultValue={ongData.ong_address?.district}
               required
               {...register('address.district')}
             />
@@ -260,7 +219,6 @@ const Edit: NextPage = () => {
               label="Cidade"
               placeholder="Digite a cidade da ONG"
               hasError={!!errors.address?.city}
-              defaultValue={ongData.ong_address?.city}
               required
               {...register('address.city')}
             />
@@ -271,7 +229,6 @@ const Edit: NextPage = () => {
               label="Estado"
               placeholder="Digite o estado da ONG"
               hasError={!!errors.address?.state}
-              defaultValue={ongData.ong_address?.state}
               required
               {...register('address.state')}
             />
@@ -282,7 +239,6 @@ const Edit: NextPage = () => {
               label="CEP"
               placeholder="Digite o CEP da ONG"
               hasError={!!errors.address?.zip_code}
-              defaultValue={ongData.ong_address?.zip_code}
               required
               {...register('address.zip_code')}
             />
@@ -298,8 +254,7 @@ const Edit: NextPage = () => {
                 label={`${index + 1}° Contato`}
                 placeholder="Digite o contato"
                 hasError={!!errors.ong_contacts}
-                defaultValue={ongData.ong_contacts[index]?.contact}
-                {...register(`ong_contacts.${index}.value` as const)} 
+                {...register(`ong_contacts.${index}.value` as any)} 
               />
 
               <IconButton
@@ -318,7 +273,6 @@ const Edit: NextPage = () => {
               label="Facebook"
               placeholder="Digite o link do perfil do Facebook"
               hasError={!!errors.facebook}
-              defaultValue={ongData.ong_social_links.find(item => item.social_link_type === 'facebook')?.social_link_url}
               {...register('facebook')}
             />
           </div>
@@ -328,7 +282,6 @@ const Edit: NextPage = () => {
               label="Instagram"
               placeholder="Digite o link do perfil do Instagram"
               hasError={!!errors.instagram}
-              defaultValue={ongData.ong_social_links.find(item => item.social_link_type === 'instagram')?.social_link_url}
               {...register('instagram')}
             />
           </div>
@@ -337,18 +290,16 @@ const Edit: NextPage = () => {
             <Input
               label="Twitter"
               placeholder="Digite o link do perfil do Twitter"
-              defaultValue={ongData.ong_social_links.find(item => item.social_link_type === 'twitter')?.social_link_url}
               hasError={!!errors.twitter}
               {...register('twitter')}
             />
-          </div>   
-
-            <Button variant="success" text="Atualizar perfil da ONG" type="submit" fullWidth />
-          </form>
-        )}
+          </div>
+        
+          <Button variant="success" text="Criar ONG" type="submit" fullWidth />
+        </form>
       </div>
     </div>
-  );
+  )
 }
 
-export default Edit;
+export default CreateOng;
