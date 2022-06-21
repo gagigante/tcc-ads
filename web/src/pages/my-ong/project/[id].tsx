@@ -42,7 +42,9 @@ const Project: NextPage<ProjectProps> = ({ project }) => {
   });
 
   const [projectData, setProjectData] = useState<Project>(project);
-  const [donationValue, setDonationValue] = useState(project.donation_value_goal ?? '');
+  const [donationValue, setDonationValue] = useState(
+    project.donation_value_goal ? String(project.donation_value_goal / 100) : ''
+  );
 
   useEffect(() => {
     if (!user) push('/');

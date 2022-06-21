@@ -41,14 +41,6 @@ const Projects: NextPage<ProjectsProps> = ({
   const [donationsValue, setDonationsValue] = useState(donationsSum);
   const [isOpen, setIsOpen] = useState(false);
 
-  function handleCloseModalAndUpdateDonationsValue(donationValue?: number) {
-    setDonations(prevState => prevState + 1);
-
-    if (donationValue) setDonationsValue(prevState => prevState + donationValue);
-
-    setIsOpen(false);
-  }
-
   return (
     <>
       <div className={styles.container}>
@@ -138,7 +130,7 @@ const Projects: NextPage<ProjectsProps> = ({
                       isLabelVisible={false} 
                     />
                     
-                    <p>Doações realizadas: {formatCurrency(donationsValue)}</p> 
+                    <p>Valor arrecadado: {formatCurrency(donationsValue)}</p> 
                   </div>
                 )}
               </div>
@@ -173,7 +165,7 @@ const Projects: NextPage<ProjectsProps> = ({
         contacts={ong.ong_contacts.map(item => item.contact)}
         whatsAppLink={ong.whatsapp_url}
         isOpen={isOpen} 
-        onClose={handleCloseModalAndUpdateDonationsValue}
+        onClose={() => setIsOpen(false)}
       />
     </>
   )

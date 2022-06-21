@@ -16,7 +16,7 @@ type DonationModalProps = {
   contacts: string[];
   whatsAppLink: string | null;
   isOpen: boolean;
-  onClose: (projectValue?: number) => void;
+  onClose: () => void;
 }
 
 type DonationFormData = {
@@ -81,7 +81,7 @@ export const DonationModal = ({
     } finally {
       setDonationValue('');
       reset();
-      onClose(Number((formatCurrencyValue(donationValue))));
+      onClose();
     }
   }
 
@@ -91,6 +91,7 @@ export const DonationModal = ({
       style={customStyles}
       ariaHideApp={false}
       contentLabel="Donation modal"
+      onRequestClose={onClose}
     >
       <div className={styles.container}>
         <h1>Faça sua doação</h1>
