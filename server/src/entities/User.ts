@@ -12,7 +12,6 @@ import {
 import { Exclude } from 'class-transformer';
 
 import { Ong } from './Ong';
-import { UserAddress } from './UserAddress';
 import { ProjectDonation } from './ProjectDonation';
 
 @Entity('users')
@@ -59,13 +58,6 @@ export class User {
 
   @UpdateDateColumn()
   updated_at: Date;
-
-  @OneToOne(
-    () => UserAddress, 
-    (userAddress) => userAddress.user,
-    { cascade: true, eager: true }
-  )
-  user_address: UserAddress;
 
   @ManyToOne(() => Ong, (ong) => ong.ong_users)
   @JoinColumn({ name: 'ong_id' })
