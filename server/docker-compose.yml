@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres
+    container_name: db-doa-mais
+    restart: always
+    ports: 
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=doa_mais
+    volumes:
+      - pgdata:/data/postgres
+
+  app:
+    build: .
+    container_name: api-doa-mais
+    restart: always
+    ports: 
+      - 3333:3333
+      - 9229:9229
+    environment:
+      - DATABASE_USER=user
+      - DATABASE_PASS=pass
+      - DATABASE_HOST=db-doa-mais
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=doa_mais
+    volumes: 
+      - .:/usr/app
+    links: 
+      - database
+    depends_on:
+      - database
+
+volumes:
+  pgdata:
+    driver: local
