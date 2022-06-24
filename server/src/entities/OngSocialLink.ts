@@ -15,7 +15,7 @@ export class OngSocialLink {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   ong_id: number;
 
   @Column()

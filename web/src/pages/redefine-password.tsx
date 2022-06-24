@@ -62,7 +62,7 @@ const SignIn: NextPage = () => {
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(handleSignIn)}>
-        <h1>Fazer login</h1>
+        <h1>Redefinir senha</h1>
 
         <div className={styles.inputContainer}>
           <Input             
